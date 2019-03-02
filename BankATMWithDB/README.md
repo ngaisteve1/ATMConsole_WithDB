@@ -1,10 +1,11 @@
 # ATMConsole_WithEntityFramework
 Implemented Entity Framework to store program data instead of using list object
 
-Note: The previous version with Entity Framework is available at https://github.com/ngaisteve1/ATMConsole_Without_OOP. 
+Note: The previous version with Entity Framework is available at https://github.com/ngaisteve1/ATMConsole_With_OOP. 
 
 ### Software Development Summary
 - Technology: C#
+- ORM Framework: Entity Framework
 - Framework: .NET Framework 4.6.1
 - Project Type: Console
 - IDE: Visual Studio Community 2017
@@ -49,6 +50,7 @@ Note: The previous version with Entity Framework is available at https://github.
 - region
 - System.Globalization for local currency symbol and format
 - ternary operator ?
+
 
 ### Video Demo
 - [ATM Program Demo Video - Part 3](http://www.youtube.com/watch?v=bG93WtkpRto)
