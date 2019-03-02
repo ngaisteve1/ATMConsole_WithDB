@@ -1,7 +1,7 @@
-# ATMConsole_With_OOP
-Implemented Object-Oriented Programming like interface, class and object. 
+# ATMConsole_WithEntityFramework
+Implemented Entity Framework to store program data instead of using list object
 
-Note: Procedural version is available at https://github.com/ngaisteve1/ATMConsole_Without_OOP. This procedual version will have lesser features compare to this OOP version.
+Note: The previous version with Entity Framework is available at https://github.com/ngaisteve1/ATMConsole_Without_OOP. 
 
 ### Software Development Summary
 - Technology: C#
