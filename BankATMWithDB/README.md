@@ -7,8 +7,7 @@ Note: The previous version with Entity Framework is available at https://github.
 - Technology: C#
 - ORM Framework: Entity Framework
 - Framework: .NET Framework 4.6.1
-- Project Type: Console
--- Total Projects: 3
+- Total Projects: 3 (2 Console projects, 1 Class Library project)
 - IDE: Visual Studio Community 2017
 - Paradigm or pattern of programming: Object-Oriented Programming (OOP)
 - Data: Data of this demo program (Bank Account and Transaction data) are stored using Entity Framework ORM in SQL Server database.
