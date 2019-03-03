@@ -1,12 +1,8 @@
+using ConsoleTables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using System.Globalization;
-using System.Threading;
-using ConsoleTables;
-using BankATMWithDB.DAL;
+using BankATMRepo;
 
 namespace MeybankATMSystem
 {
@@ -63,7 +59,7 @@ namespace MeybankATMSystem
                                     var vMThirdPartyTransfer = new VMThirdPartyTransfer();
                                     vMThirdPartyTransfer = ATMScreen.ThirdPartyTransferForm();
 
-                                    PerformThirdPartyTransfer(selectedAccount, vMThirdPartyTransfer);
+                                    //PerformThirdPartyTransfer(selectedAccount, vMThirdPartyTransfer);
                                     break;
                                 case (int)SecureMenu.ViewTransaction:
                                     ViewTransaction(selectedAccount);
@@ -136,7 +132,7 @@ namespace MeybankATMSystem
                 // for brevity, length 6 is not validated and data type.
 
 
-                System.Console.Write("\nChecking card number and password.");
+                Console.Write("\nChecking card number and password.");
                 Utility.printDotAnimation();
 
                 // LINQ Query
@@ -273,7 +269,53 @@ namespace MeybankATMSystem
             }
         }
 
-        public void PerformThirdPartyTransfer(BankAccount bankAccount, VMThirdPartyTransfer vMThirdPartyTransfer)
+        
+
+        private static bool PreviewBankNotesCount(decimal amount)
+        {
+            int hundredNotesCount = (int)amount / 100;
+            int fiftyNotesCount = ((int)amount % 100) / 50;
+            int tenNotesCount = ((int)amount % 50) / 10;
+
+            Console.WriteLine("\nSummary");
+            Console.WriteLine("-------");
+            Console.WriteLine($"{ATMScreen.cur} 100 x {hundredNotesCount} = {100 * hundredNotesCount}");
+            Console.WriteLine($"{ATMScreen.cur} 50 x {fiftyNotesCount} = {50 * fiftyNotesCount}");
+            Console.WriteLine($"{ATMScreen.cur} 10 x {tenNotesCount} = {10 * tenNotesCount}");
+            Console.Write($"Total amount: {Utility.FormatAmount(amount)}");
+
+            //Console.Write("\n\nPress 1 to confirm or 0 to cancel: ");
+            string opt = Utility.GetValidIntInputAmt("Press 1 to confirm or 0 to cancel").ToString();
+
+            return (opt.Equals("1")) ? true : false;
+        }
+
+        public void ViewTransaction(BankAccount bankAccount)
+        {
+
+            if (_listOfTransactions.Count <= 0)
+                Utility.PrintMessage($"There is no transaction yet.", true);
+            else
+            {
+                var table = new ConsoleTable("Type", "From", "To", "Amount " + ATMScreen.cur, "Transaction Date");
+
+                foreach (var tran in _listOfTransactions)
+                {
+                    table.AddRow(tran.TransactionType, tran.BankAccountNoFrom, tran.BankAccountNoTo, tran.TransactionAmount,
+                    tran.TransactionDate);
+                }
+                table.Options.EnableCount = false;
+                table.Write();
+                Utility.PrintMessage($"You have performed {_listOfTransactions.Count} transactions.", true);
+            }
+        }
+
+        public void InsertTransaction(BankAccount bankAccount, Transaction transaction)
+        {
+            _listOfTransactions.Add(transaction);
+        }
+
+        public void PerformThirdPartyTransfer(BankAccount bankAccount, BankATMRepo.VMThirdPartyTransfer vMThirdPartyTransfer)
         {
             if (vMThirdPartyTransfer.TransferAmount <= 0)
                 Utility.PrintMessage("Amount needs to be more than zero. Try again.", false);
@@ -323,51 +365,8 @@ namespace MeybankATMSystem
                     db.SaveChanges();
                 }
             }
-
         }
 
-        private static bool PreviewBankNotesCount(decimal amount)
-        {
-            int hundredNotesCount = (int)amount / 100;
-            int fiftyNotesCount = ((int)amount % 100) / 50;
-            int tenNotesCount = ((int)amount % 50) / 10;
-
-            Console.WriteLine("\nSummary");
-            Console.WriteLine("-------");
-            Console.WriteLine($"{ATMScreen.cur} 100 x {hundredNotesCount} = {100 * hundredNotesCount}");
-            Console.WriteLine($"{ATMScreen.cur} 50 x {fiftyNotesCount} = {50 * fiftyNotesCount}");
-            Console.WriteLine($"{ATMScreen.cur} 10 x {tenNotesCount} = {10 * tenNotesCount}");
-            Console.Write($"Total amount: {Utility.FormatAmount(amount)}");
-
-            //Console.Write("\n\nPress 1 to confirm or 0 to cancel: ");
-            string opt = Utility.GetValidIntInputAmt("Press 1 to confirm or 0 to cancel").ToString();
-
-            return (opt.Equals("1")) ? true : false;
-        }
-
-        public void ViewTransaction(BankAccount bankAccount)
-        {
-
-            if (_listOfTransactions.Count <= 0)
-                Utility.PrintMessage($"There is no transaction yet.", true);
-            else
-            {
-                var table = new ConsoleTable("Type", "From", "To", "Amount " + ATMScreen.cur, "Transaction Date");
-
-                foreach (var tran in _listOfTransactions)
-                {
-                    table.AddRow(tran.TransactionType, tran.BankAccountNoFrom, tran.BankAccountNoTo, tran.TransactionAmount,
-                    tran.TransactionDate);
-                }
-                table.Options.EnableCount = false;
-                table.Write();
-                Utility.PrintMessage($"You have performed {_listOfTransactions.Count} transactions.", true);
-            }
-        }
-
-        public void InsertTransaction(BankAccount bankAccount, Transaction transaction)
-        {
-            _listOfTransactions.Add(transaction);
-        }
+       
     }
 }

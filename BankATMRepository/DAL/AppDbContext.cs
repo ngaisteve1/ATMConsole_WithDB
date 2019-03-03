@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 
-namespace BankATMWithDB.DAL
-{
-    class AppDbContext : DbContext
+
+public class AppDbContext : DbContext
     {
         public AppDbContext() : base("MeybankDB")
         {
@@ -18,4 +12,4 @@ namespace BankATMWithDB.DAL
         public DbSet<Transaction> Transactions { get; set; }
 
     }
-}
+
