@@ -13,13 +13,17 @@ Note: The previous version with Entity Framework is available at https://github.
 - Data: Data of this demo program (Bank Account and Transaction data) are stored using Entity Framework ORM in SQL Server database.
 - NuGet: ConsoleTables (Version 2.2), CsConsoleFormat (Coming Soon)
 
-### <img class="emoji" alt="atm" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3e7.png"> <img class="emoji" alt="credit_card" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4b3.png"> ATM Basic Features / Use Cases:
+### <img class="emoji" alt="atm" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3e7.png"> <img class="emoji" alt="credit_card" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4b3.png"> ATM Basic Features / Use Cases (Bank Customer):
 - [x] Check account balance
 - [x] Place deposit
 - [x] Make withdraw
 - [x] Check card number and pin against database
 - [x] Make third-party-transfer (Transfer within the same bank but different account number)
 - [x] View bank transactions
+
+### <img class="emoji" alt="atm" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3e7.png"> <img class="emoji" alt="credit_card" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4b3.png"> ATM Basic Features / Use Cases (Bank Administrator):
+- [x] Add bank account
+- [x] Manage bank account
 
 #### Business Rules:
 - User is not allow to withdraw or transfer more than the balance amount. A minimum RM20 is needed to maintain the bank account.
@@ -29,7 +33,7 @@ Note: The previous version with Entity Framework is available at https://github.
 - All bank account are the from the same bank
 
 #### Enhancement (To Do):
-- Some generic input validation methods to handle any data type, input length and input label.
+- input validation methods to handle any data type, input length and input label. fluent validation.
 
 ### OOP principles and C# features implemented:
 - class
