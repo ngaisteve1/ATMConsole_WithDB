@@ -31,9 +31,11 @@ This version stored data in the database using Entity Framework with extra requi
 #### Business Rules:
 - User is not allow to withdraw or transfer more than the balance amount. A minimum RM20 is needed to maintain the bank account.
 - If user key in the wrong pin more than 3 times, the bank account will be locked.
-- Cannot duplicate account number
+- Cannot duplicate NRIC
 - Starting account balance needs minimum RM50.00
 - Card PIN code needs to be 6 digit number.
+- Account number is 7 digit (auto-generated for this demo)
+- ATM Card Number is 9 digit (auto-generated for this demo)
 
 #### Assumption:
 - All bank account are the from the same bank
