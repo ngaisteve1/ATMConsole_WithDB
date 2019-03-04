@@ -25,6 +25,7 @@ This version stored data in the database using Entity Framework with extra requi
 - [x] View bank transactions
 
 ### <img class="emoji" alt="atm" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3e7.png"> <img class="emoji" alt="credit_card" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4b3.png"> ATM Basic Features / Use Cases (Bank Administrator):
+- [x] Add 3 sample bank account (Seeding)
 - [x] Add bank account
 - [x] Search and Delete bank account
 
@@ -45,7 +46,9 @@ This version stored data in the database using Entity Framework with extra requi
 
 
 #### Enhancement (To Do):
-- [ ] Fluent Validation to handle input validation of any data type and input length (min, max, fixed)
+- [ ] Try catch finally block for Entity Framework CRUD operation.
+- [ ] Logging with Log4Net external library
+- [ ] Repository layer in Repository project, so that Bank Customer project and Bank Administrator project can call general repository method for CRUD operation with method parameter. 
 
 ### OOP principles and C# features implemented:
 - class (POCO class and utility class)
