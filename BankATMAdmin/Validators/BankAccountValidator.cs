@@ -13,21 +13,20 @@ namespace BankATMAdmin.Validators
 
         public BankAccountValidator()
         {
-            
-            RuleFor(x => x.NRIC).Length(10, 14).WithMessage("Enter a valid NRIC length.");
-            RuleFor(x => x.AccountNumber).Must(isUniqueAccountNumber).WithMessage("Duplicate account number");
-            RuleFor(x => x.Balance).GreaterThanOrEqualTo(50).WithMessage($"Minimum starting balance required is {ATMScreenAdmin.cur} 50.00 to open new bank account.");
-            RuleFor(x => x.PinCode).Must(x => x > 99999 && x < 1000000).WithMessage("Enter 6 digits for Pin code.");
+            RuleFor(x => x.NRIC).Matches(@"^\d{6}-\d{2}-\d{4}$").WithMessage("Invalid NRIC format. Example of valid NRIC format, 900210-10-8080");
+            RuleFor(x => x.NRIC).Must(isUniqueNRIC).WithMessage("Duplicate NRIC");
+            RuleFor(x => x.Balance).GreaterThanOrEqualTo(50).WithMessage($"A minimum of {ATMScreenAdmin.cur}50.00 balance is required to open Saving bank account type.");
+            RuleFor(x => x.PinCode).Must(x => x > 99999 && x < 1000000).WithMessage("Enter 6 digits for ATM Card Pin code.");
             
         }
 
-        private bool isUniqueAccountNumber(Int64 _accountNumber)
+        private bool isUniqueNRIC(string _NRIC)
         {
-            // If the new input account number matches with any of the account number in the database 
-            bool accountNumberExist = db.BankAccounts.Any(b => b.AccountNumber.Equals(_accountNumber));
+            // If the new input NRIC matches with any of the NRIC in the database 
+            bool NRICExist = db.BankAccounts.Any(b => b.NRIC.Equals(_NRIC));
             
             // return false. Otherwise, return true.
-            return accountNumberExist ? false : true;
+            return NRICExist ? false : true;
         }
     }
 }
