@@ -49,6 +49,7 @@ This version stored data in the database using Entity Framework with extra requi
 - [ ] Try catch finally block for Entity Framework CRUD operation. Add Dispose method as GC for EF db context object to manage resources (application memory).
 - [ ] Logging with Log4Net external library
 - [ ] Repository layer in Repository project, so that Bank Customer project and Bank Administrator project can call general repository method for CRUD operation with method parameter. 
+- [ ] Investigate the possible cause of program 'clash / rerun' automatically.
 
 ### OOP principles and C# features implemented:
 - class (POCO class and utility class)
