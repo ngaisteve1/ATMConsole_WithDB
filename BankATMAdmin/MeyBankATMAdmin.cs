@@ -2,6 +2,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using BankATMAdmin.Validators;
+using FluentValidation.Results;
+using System.ComponentModel.DataAnnotations;
 
 namespace BankATMAdmin
 {
@@ -90,9 +93,29 @@ namespace BankATMAdmin
 
         public void AddBankAccount(BankAccount _bankAccount)
         {
+
             db.BankAccounts.Add(_bankAccount);
             db.SaveChanges();
             Utility.PrintMessage("Bank account added successfully.", true);
+
+            // Check during each input instead of doing it at the end
+            //BankAccountValidator bankAccountValidator = new BankAccountValidator();
+            //ValidationResult validationResult = bankAccountValidator.Validate(_bankAccount);
+            //if (!validationResult.IsValid)
+            //{
+            //    foreach (var failure in validationResult.Errors)
+            //        Console.WriteLine($"Error Type: {failure.PropertyName}. Error Mesg: {failure.ErrorMessage}");
+
+            //    Utility.PrintMessage("No Bank account added.", true);
+            //}
+                
+            //else
+            //{
+            //    db.BankAccounts.Add(_bankAccount);
+            //    db.SaveChanges();
+            //    Utility.PrintMessage("Bank account added successfully.", true);
+            //}
+            
         }
 
         public void ManageBankAccount()

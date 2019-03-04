@@ -35,6 +35,9 @@ public static class Utility
         {
             rawInput = GetRawInput(input);
             valid = Int64.TryParse(rawInput, out amount);
+
+
+
             if (!valid)
                 PrintMessage("Invalid input. Try again.", false);
         }

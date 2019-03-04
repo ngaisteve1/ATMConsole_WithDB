@@ -1,5 +1,7 @@
-﻿using System;
+﻿using BankATMAdmin.Validators;
+using System;
 using System.ComponentModel;
+using FluentValidation.Results;
 
 namespace BankATMAdmin
 {
@@ -49,17 +51,38 @@ namespace BankATMAdmin
         {
             var newBankAccountForm = new BankAccount();
 
+            BankAccountValidator bankAccountValidator = new BankAccountValidator();
+
+            
             newBankAccountForm.FullName = Utility.GetValidStringInput("account full name");
             newBankAccountForm.NRIC = Utility.GetValidStringInput("NRIC");
             newBankAccountForm.AccountNumber = Utility.GetValidIntInputAmt("account number");
             newBankAccountForm.Balance = Utility.GetValidDecimalInputAmt("account starting balance");
             newBankAccountForm.CardNumber = Utility.GetValidIntInputAmt("card number");
             newBankAccountForm.PinCode = Utility.GetValidIntInputAmt("card pin");
-            
+
+            ValidationResult validationResult = bankAccountValidator.Validate(newBankAccountForm);
+            if (!validationResult.IsValid)
+            {
+                foreach (var failure in validationResult.Errors)
+                {
+                    //Utility.PrintMessage($"Error Type: {failure.PropertyName}. Error Mesg: {failure.ErrorMessage}",false);    
+                    Utility.PrintMessage($"Error: {failure.ErrorMessage}",false);    
+                }
+
+                if (!validationResult.IsValid)
+                {
+                    Utility.PrintMessage($"Enter all Bank Account details again", false);
+                    getBankAccountForm();
+                }
+                    
+
+            }
+
             return newBankAccountForm;
         }
 
-        
+
         #endregion
     }
 }
