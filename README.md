@@ -9,12 +9,12 @@ This version stored data in the database using Entity Framework with extra requi
 ### Software Development Summary
 - Technology: C#
 - ORM Framework: Entity Framework 6.2
-- Framework: .NET Core 2.2
-- Project Type: Console
-- IDE: Visual Studio Code (Version 1.31.1)
+- Framework: .NET Framework 4.6.1
+- Total Projects: 3 (1 Class Library project and 2 Console Projects)
+- IDE: Visual Studio Community 2017
 - Paradigm or pattern of programming: Object-Oriented Programming (OOP)
 - Data: Data of this demo program (Bank Account and Transaction data) are stored in SQL Server database using Entity Framework ORM.
-- NuGet: ConsoleTables (Version 2.2), CsConsoleFormat (Coming Soon)
+- NuGet: ConsoleTables (Version 2.2), FluentValidation (Version 8), CsConsoleFormat (Coming Soon)
 
 ### <img class="emoji" alt="atm" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3e7.png"> <img class="emoji" alt="credit_card" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4b3.png"> ATM Basic Features / Use Cases (Bank Customer):
 - [x] Check account balance
@@ -26,7 +26,7 @@ This version stored data in the database using Entity Framework with extra requi
 
 ### <img class="emoji" alt="atm" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3e7.png"> <img class="emoji" alt="credit_card" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4b3.png"> ATM Basic Features / Use Cases (Bank Administrator):
 - [x] Add bank account
-- [x] Manage bank account
+- [x] Search and Delete bank account
 
 #### Business Rules:
 - User is not allow to withdraw or transfer more than the balance amount. A minimum RM20 is needed to maintain the bank account.
