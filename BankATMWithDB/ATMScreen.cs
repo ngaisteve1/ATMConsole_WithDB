@@ -29,6 +29,7 @@ public enum SecureMenu
 
 public static class ATMScreen
 {
+    // todo: to move to general library.
     internal static string cur = "RM ";
 
     #region ATM UI Forms

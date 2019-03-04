@@ -93,29 +93,9 @@ namespace BankATMAdmin
 
         public void AddBankAccount(BankAccount _bankAccount)
         {
-
             db.BankAccounts.Add(_bankAccount);
             db.SaveChanges();
-            Utility.PrintMessage("Bank account added successfully.", true);
-
-            // Check during each input instead of doing it at the end
-            //BankAccountValidator bankAccountValidator = new BankAccountValidator();
-            //ValidationResult validationResult = bankAccountValidator.Validate(_bankAccount);
-            //if (!validationResult.IsValid)
-            //{
-            //    foreach (var failure in validationResult.Errors)
-            //        Console.WriteLine($"Error Type: {failure.PropertyName}. Error Mesg: {failure.ErrorMessage}");
-
-            //    Utility.PrintMessage("No Bank account added.", true);
-            //}
-                
-            //else
-            //{
-            //    db.BankAccounts.Add(_bankAccount);
-            //    db.SaveChanges();
-            //    Utility.PrintMessage("Bank account added successfully.", true);
-            //}
-            
+            Utility.PrintMessage("Bank account added successfully.", true);       
         }
 
         public void ManageBankAccount()
@@ -130,6 +110,7 @@ namespace BankATMAdmin
             {
                 newBankAccount.AccountNumber = Utility.GetValidIntInputAmt("account number");
 
+                // todo: architecture upgrade: move LINQ query to Repository layer. Call data by method and parameter.
                 selectedBankAccount = (from b in db.BankAccounts
                                            where b.AccountNumber.Equals(newBankAccount.AccountNumber)
                                            select b).FirstOrDefault();

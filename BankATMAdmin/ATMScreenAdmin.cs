@@ -21,6 +21,9 @@ namespace BankATMAdmin
 
     class ATMScreenAdmin
     {
+        // todo: to move to general library.
+        internal static string cur = "RM ";
+
         public static void ShowMenu()
         {
             Console.Clear();
@@ -66,7 +69,7 @@ namespace BankATMAdmin
             {
                 foreach (var failure in validationResult.Errors)
                 {
-                    //Utility.PrintMessage($"Error Type: {failure.PropertyName}. Error Mesg: {failure.ErrorMessage}",false);    
+                    // failure.PropertyName 
                     Utility.PrintMessage($"Error: {failure.ErrorMessage}",false);    
                 }
 
@@ -74,9 +77,7 @@ namespace BankATMAdmin
                 {
                     Utility.PrintMessage($"Enter all Bank Account details again", false);
                     getBankAccountForm();
-                }
-                    
-
+                }                
             }
 
             return newBankAccountForm;
