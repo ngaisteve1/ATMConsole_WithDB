@@ -26,7 +26,7 @@ This version stored data in the database using Entity Framework with extra requi
 
 ### <img class="emoji" alt="atm" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3e7.png"> <img class="emoji" alt="credit_card" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4b3.png"> ATM Basic Features / Use Cases (Bank Administrator):
 - [x] Add bank account
-- [x] Manage bank account
+- [x] Search and Delete bank account
 
 #### Business Rules:
 - User is not allow to withdraw or transfer more than the balance amount. A minimum RM20 is needed to maintain the bank account.
