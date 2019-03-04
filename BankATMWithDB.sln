@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankATMWithDB", "BankATMWithDB\BankATMWithDB.csproj", "{FC9CA820-FEBD-4E84-B988-C6BDB9849727}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankATMCustomer", "BankATMWithDB\BankATMCustomer.csproj", "{FC9CA820-FEBD-4E84-B988-C6BDB9849727}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankATMRepository", "BankATMRepository\BankATMRepository.csproj", "{70F0EA78-5A29-4778-9CFA-FB1B564A07ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankATMAdmin", "BankATMAdmin\BankATMAdmin.csproj", "{FFC9C5B8-FC66-4BFF-8DCB-00EEABBD9660}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{FC9CA820-FEBD-4E84-B988-C6BDB9849727}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC9CA820-FEBD-4E84-B988-C6BDB9849727}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC9CA820-FEBD-4E84-B988-C6BDB9849727}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70F0EA78-5A29-4778-9CFA-FB1B564A07ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70F0EA78-5A29-4778-9CFA-FB1B564A07ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70F0EA78-5A29-4778-9CFA-FB1B564A07ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70F0EA78-5A29-4778-9CFA-FB1B564A07ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFC9C5B8-FC66-4BFF-8DCB-00EEABBD9660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFC9C5B8-FC66-4BFF-8DCB-00EEABBD9660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFC9C5B8-FC66-4BFF-8DCB-00EEABBD9660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFC9C5B8-FC66-4BFF-8DCB-00EEABBD9660}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

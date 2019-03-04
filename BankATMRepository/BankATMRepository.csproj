@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FC9CA820-FEBD-4E84-B988-C6BDB9849727}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>BankATMWithDB</RootNamespace>
-    <AssemblyName>BankATMWithDB</AssemblyName>
+    <ProjectGuid>{70F0EA78-5A29-4778-9CFA-FB1B564A07ED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BankATMRepository</RootNamespace>
+    <AssemblyName>BankATMRepository</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,12 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BankATMRepository">
-      <HintPath>..\BankATMRepository\bin\Release\BankATMRepository.dll</HintPath>
-    </Reference>
-    <Reference Include="ConsoleTables, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ConsoleTables.2.2.0\lib\net40\ConsoleTables.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -56,15 +48,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ATMScreen.cs" />
-    <Compile Include="MeybankATM.cs" />
+    <Compile Include="DAL\AppDbContext.cs" />
+    <Compile Include="Interface\IBalance.cs" />
+    <Compile Include="Interface\IDeposit.cs" />
+    <Compile Include="Interface\ILogin.cs" />
+    <Compile Include="Interface\IThirdPartyTransfer.cs" />
+    <Compile Include="Interface\ITransaction.cs" />
+    <Compile Include="Interface\IWithdrawal.cs" />
+    <Compile Include="Migrations\201903032311341_Initial.cs" />
+    <Compile Include="Migrations\201903032311341_Initial.Designer.cs">
+      <DependentUpon>201903032311341_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\BankAccount.cs" />
+    <Compile Include="Model\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestProgram.cs" />
+    <Compile Include="Utility.cs" />
     <Compile Include="ViewModel\VMThirdPartyTransfer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201903032311341_Initial.resx">
+      <DependentUpon>201903032311341_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
