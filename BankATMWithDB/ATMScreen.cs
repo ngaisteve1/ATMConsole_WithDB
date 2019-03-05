@@ -23,8 +23,11 @@ public enum SecureMenu
     [Description("Transaction")]
     ViewTransaction = 5,
 
+    [Description("Change PIN")]
+    ChangePIN = 6,
+
     [Description("Logout")]
-    Logout = 6
+    Logout = 7
 }
 
 public static class ATMScreen
