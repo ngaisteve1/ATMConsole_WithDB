@@ -72,6 +72,6 @@ This version stored data in the database using Entity Framework with extra requi
 - ternary operator ?
 
 ### Video Demo
-
+- [Sample Bank ATM C# Console App with Entity Framework](https://youtu.be/sQ0esm7QlpQ)
 
 [If this content is helpful to you, consider to support and buy me a cup of coffee :) ](https://ko-fi.com/V7V2PN67)
