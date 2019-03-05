@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel;
 using FluentValidation.Results;
 
+
 namespace BankATMAdmin
 {
     public enum SecureMenuAdmin
@@ -64,13 +65,16 @@ namespace BankATMAdmin
 
 
             // Variation. Auto generate a random account number or from a running sequence number
-            newBankAccountForm.AccountNumber = Utility.GetValidIntInputAmt("account number");
+            //newBankAccountForm.AccountNumber = Utility.GetValidIntInputAmt("account number");
+            newBankAccountForm.AccountNumber = Utility.GenerateRandomNumber(7032040, 9834010, new Random());
+              
 
             Console.WriteLine($"A minimum of {ATMScreenAdmin.cur}50.00 balance is required to open Saving bank account type.");
             newBankAccountForm.Balance = Utility.GetValidDecimalInputAmt("account starting balance");
 
             // Variation. Auto generate a random account number or from a running sequence number
-            newBankAccountForm.CardNumber = Utility.GetValidIntInputAmt("ATM card number");
+            //newBankAccountForm.CardNumber = Utility.GetValidIntInputAmt("ATM card number");
+            newBankAccountForm.CardNumber = Utility.GenerateRandomNumber(203450123, 698910890, new Random());
 
             Console.WriteLine("Enter 6 digits for ATM Card Pin code.");
             newBankAccountForm.PinCode = Utility.GetValidIntInputAmt("ATM card pin");

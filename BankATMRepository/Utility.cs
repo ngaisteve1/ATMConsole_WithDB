@@ -89,6 +89,17 @@ public static class Utility
         return input.ToString();
     }
 
+    // Generate a random number between two numbers
+    // For dummy bank account number and ATM card number
+    public static long GenerateRandomNumber(long min, long max, Random rand)
+    {
+        long result = rand.Next((Int32)(min >> 32), (Int32)(max >> 32));
+        result = (result << 32);
+        result = result | (long)rand.Next((Int32)min, (Int32)max);
+        return result;
+
+    }
+
     #region UIOutput - UX and output format
     public static void printDotAnimation(int timer = 10)
     {
