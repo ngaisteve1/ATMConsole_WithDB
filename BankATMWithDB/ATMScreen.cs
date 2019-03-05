@@ -23,8 +23,8 @@ public enum SecureMenu
     [Description("Transaction")]
     ViewTransaction = 5,
 
-    [Description("Change PIN")]
-    ChangePIN = 6,
+    [Description("Change Card PIN Code")]
+    ChangeCardPINCode = 6,
 
     [Description("Logout")]
     Logout = 7
@@ -79,7 +79,8 @@ public static class ATMScreen
         Console.WriteLine("| 3. Withdrawal              |");
         Console.WriteLine("| 4. Third Party Transfer    |");
         Console.WriteLine("| 5. Transactions            |");
-        Console.WriteLine("| 6. Logout                  |");
+        Console.WriteLine("| 6. Change Card PIN Code    |");
+        Console.WriteLine("| 7. Logout                  |");
         Console.WriteLine("|                            |");
         Console.WriteLine(" ---------------------------");
     }

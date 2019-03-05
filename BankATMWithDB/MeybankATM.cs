@@ -64,7 +64,9 @@ namespace MeybankATMSystem
                                 case (int)SecureMenu.ViewTransaction:
                                     ViewTransaction(selectedAccount);
                                     break;
-
+                                case (int)SecureMenu.ChangeCardPINCode:
+                                    Console.WriteLine("This function is not ready.");
+                                    break;
                                 case (int)SecureMenu.Logout:
                                     Utility.PrintMessage("You have succesfully logout. Please collect your ATM card..", true);
 
