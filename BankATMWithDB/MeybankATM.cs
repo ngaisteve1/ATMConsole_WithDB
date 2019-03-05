@@ -297,11 +297,11 @@ namespace MeybankATMSystem
                 Utility.PrintMessage($"There is no transaction yet.", true);
             else
             {
-                var table = new ConsoleTable("Type", "From", "To", "Amount " + ATMScreen.cur, "Transaction Date");
+                var table = new ConsoleTable("Transaction Id","Type", "From", "To", "Amount " + ATMScreen.cur, "Transaction Date");
 
                 foreach (var tran in _listOfTransactions)
                 {
-                    table.AddRow(tran.TransactionType, tran.BankAccountNoFrom, tran.BankAccountNoTo, tran.TransactionAmount,
+                    table.AddRow(tran.TransactionId,tran.TransactionType, tran.BankAccountNoFrom, tran.BankAccountNoTo, tran.TransactionAmount,
                     tran.TransactionDate);
                 }
                 table.Options.EnableCount = false;

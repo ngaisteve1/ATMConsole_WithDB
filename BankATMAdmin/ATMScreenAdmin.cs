@@ -10,14 +10,17 @@ namespace BankATMAdmin
     {
         // Value 1 is needed because menu starts with 1 while enum starts with 0 if no value given.
 
+        [Description("Add 3 Sample Bank Account")]
+        AddSampleBankAccount = 1,
+
         [Description("Add Bank Account")]
-        AddBankAccount = 1,
+        AddBankAccount = 2,
 
         [Description("Manage Bank Account")]
-        ManageBankAccount = 2,
+        ManageBankAccount = 3,
 
         [Description("Logout")]
-        Logout = 3
+        Logout = 4
     }
 
     class ATMScreenAdmin
@@ -43,9 +46,10 @@ namespace BankATMAdmin
             Console.WriteLine(" ---------------------------------");
             Console.WriteLine("| Meybank ATM Main Menu (Admin)  |");
             Console.WriteLine("|                                |");
-            Console.WriteLine("| 1. Add Bank Account            |");
-            Console.WriteLine("| 2. Manage Bank Account         |");
-            Console.WriteLine("| 3. Logout                      |");
+            Console.WriteLine("| 1. Add 3 Sample Bank Account   |");
+            Console.WriteLine("| 2. Add Bank Account            |");
+            Console.WriteLine("| 3. Manage Bank Account         |");
+            Console.WriteLine("| 4. Logout                      |");
             Console.WriteLine("|                                |");
             Console.WriteLine(" ---------------------------------");
         }
