@@ -1,5 +1,5 @@
 using BankATMRepo;
 
 public interface IThirdPartyTransfer {
-    void PerformThirdPartyTransfer(BankAccount bankAccount,VMThirdPartyTransfer vmThirdPartyTransfer);
+    void PerformThirdPartyTransfer(BankAccount bankAccount, BankATMRepo.VMThirdPartyTransfer vmThirdPartyTransfer);
 }

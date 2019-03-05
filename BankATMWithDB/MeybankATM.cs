@@ -56,13 +56,13 @@ namespace MeybankATMSystem
                                     MakeWithdrawal(selectedAccount);
                                     break;
                                 case (int)SecureMenu.ThirdPartyTransfer:
-                                    var vMThirdPartyTransfer = new VMThirdPartyTransfer();
+                                    var vMThirdPartyTransfer = new BankATMRepo.VMThirdPartyTransfer();
                                     vMThirdPartyTransfer = ATMScreen.ThirdPartyTransferForm();
 
-                                    //PerformThirdPartyTransfer(selectedAccount, vMThirdPartyTransfer);
+                                    PerformThirdPartyTransfer(selectedAccount, vMThirdPartyTransfer);
                                     break;
                                 case (int)SecureMenu.ViewTransaction:
-                                    ViewTransaction(selectedAccount);
+                                    ViewTransaction();
                                     break;
 
                                 case (int)SecureMenu.Logout:
@@ -106,6 +106,7 @@ namespace MeybankATMSystem
 
             // Move the data to the database via seeding
 
+            // Without Entity Framework
             //_accountList = new List<BankAccount>
             //{
             //    new BankAccount() { FullName = "John", AccountNumber=333111, CardNumber = 123, PinCode = 111111, Balance = 2000.00m, isLocked = false },
@@ -139,7 +140,10 @@ namespace MeybankATMSystem
                 var listOfAccounts = from a in db.BankAccounts
                                      select a;
 
+                // Without Entity Framework
                 //foreach (BankAccount account in _accountList)
+
+                // With Entity Framework
                 foreach (BankAccount account in listOfAccounts)
                 {
                     if (inputAccount.CardNumber.Equals(account.CardNumber))
@@ -189,8 +193,8 @@ namespace MeybankATMSystem
 
             Console.WriteLine("\nNote: Actual ATM system will just let you ");
             Console.Write("place bank notes into ATM machine. \n\n");
-            //Console.Write("Enter amount: " + ATMScreen.cur);
-            transaction_amt = Utility.GetValidDecimalInputAmt("amount");
+            
+            transaction_amt = Utility.GetValidDecimalInputAmt($"amount in {ATMScreen.cur}");
 
             System.Console.Write("\nCheck and counting bank notes.");
             Utility.printDotAnimation();
@@ -230,11 +234,8 @@ namespace MeybankATMSystem
         {
             Console.WriteLine("\nNote: For GUI or actual ATM system, user can ");
             Console.Write("choose some default withdrawal amount or custom amount. \n\n");
-
-            // Console.Write("Enter amount: " + ATMScreen.cur);
-            // transaction_amt = ATMScreen.ValidateInputAmount(Console.ReadLine());
-
-            transaction_amt = Utility.GetValidDecimalInputAmt("amount");
+            
+            transaction_amt = Utility.GetValidDecimalInputAmt($"amount {ATMScreen.cur}");
 
             if (transaction_amt <= 0)
                 Utility.PrintMessage("Amount needs to be more than zero. Try again.", false);
@@ -282,37 +283,50 @@ namespace MeybankATMSystem
             Console.WriteLine($"{ATMScreen.cur} 100 x {hundredNotesCount} = {100 * hundredNotesCount}");
             Console.WriteLine($"{ATMScreen.cur} 50 x {fiftyNotesCount} = {50 * fiftyNotesCount}");
             Console.WriteLine($"{ATMScreen.cur} 10 x {tenNotesCount} = {10 * tenNotesCount}");
-            Console.Write($"Total amount: {Utility.FormatAmount(amount)}");
-
-            //Console.Write("\n\nPress 1 to confirm or 0 to cancel: ");
-            string opt = Utility.GetValidIntInputAmt("Press 1 to confirm or 0 to cancel").ToString();
+            Console.Write($"Total amount: {Utility.FormatAmount(amount)}\n\n");
+            
+            string opt = Utility.GetValidIntInputAmt("1 to confirm or 0 to cancel").ToString();
 
             return (opt.Equals("1")) ? true : false;
         }
 
-        public void ViewTransaction(BankAccount bankAccount)
+        public void ViewTransaction()
         {
 
-            if (_listOfTransactions.Count <= 0)
+            //Without Entity Framework - if (_listOfTransactions.Count <= 0)
+            if (db.Transactions.Count() <= 0)
                 Utility.PrintMessage($"There is no transaction yet.", true);
             else
             {
-                var table = new ConsoleTable("Transaction Id","Type", "From", "To", "Amount " + ATMScreen.cur, "Transaction Date");
+                var table = new ConsoleTable("Id","Type", "From", "To", "Amount " + ATMScreen.cur, "Trans Date Time");
 
-                foreach (var tran in _listOfTransactions)
+                // Without Entity Framework - foreach (var tran in _listOfTransactions)
+                // With Entity Framework
+                var transactionsOrder = (from t in db.Transactions
+                                        orderby t.TransactionDate descending
+                                        select t).Take(5); // SELECT Top 5
+                                        
+                foreach (var tran in transactionsOrder)
                 {
                     table.AddRow(tran.TransactionId,tran.TransactionType, tran.BankAccountNoFrom, tran.BankAccountNoTo, tran.TransactionAmount,
                     tran.TransactionDate);
                 }
                 table.Options.EnableCount = false;
                 table.Write();
-                Utility.PrintMessage($"You have performed {_listOfTransactions.Count} transactions.", true);
+
+                //Without Entity Framework - Utility.PrintMessage($"You have performed {_listOfTransactions.Count} transactions.", true);
+                Utility.PrintMessage($"You have performed {db.Transactions.Count()} transactions.", true);
             }
         }
 
         public void InsertTransaction(BankAccount bankAccount, Transaction transaction)
         {
-            _listOfTransactions.Add(transaction);
+            // Without Entity Framework - _listOfTransactions.Add(transaction);
+            // With Entity Framework
+            db.Transactions.Add(transaction);
+
+            // With Entity Framework
+            db.SaveChanges();
         }
 
         public void PerformThirdPartyTransfer(BankAccount bankAccount, BankATMRepo.VMThirdPartyTransfer vMThirdPartyTransfer)
@@ -328,9 +342,12 @@ namespace MeybankATMSystem
             else
             {
                 // Check if receiver's bank account number is valid.
+                // Without Entity framework -
                 //var selectedBankAccountReceiver = (from b in _accountList
                 //                                   where b.AccountNumber == vMThirdPartyTransfer.RecipientBankAccountNumber
                 //                                   select b).FirstOrDefault();
+
+                // With Entity framework
                 var selectedBankAccountReceiver = (from b in db.BankAccounts
                                                    where b.AccountNumber == vMThirdPartyTransfer.RecipientBankAccountNumber
                                                    select b).FirstOrDefault();
@@ -351,7 +368,10 @@ namespace MeybankATMSystem
                         TransactionAmount = vMThirdPartyTransfer.TransferAmount,
                         TransactionDate = DateTime.Now
                     };
-                    _listOfTransactions.Add(transaction);
+                    // Without Entity framework - _listOfTransactions.Add(transaction);
+                    // With Entity Framework
+                    db.Transactions.Add(transaction);
+
                     Utility.PrintMessage($"You have successfully transferred out {Utility.FormatAmount(vMThirdPartyTransfer.TransferAmount)} to {vMThirdPartyTransfer.RecipientBankAccountName}", true);
                     // Add transaction record - End
 
@@ -361,7 +381,7 @@ namespace MeybankATMSystem
                     // Update balance amount (Receiver)
                     selectedBankAccountReceiver.Balance = selectedBankAccountReceiver.Balance + vMThirdPartyTransfer.TransferAmount;
 
-                    // Entity framework. To sync changes from dbcontext ('virtual local db') to physical db.
+                    // With Entity framework. To sync changes from dbcontext ('virtual local db') to physical db.
                     db.SaveChanges();
                 }
             }

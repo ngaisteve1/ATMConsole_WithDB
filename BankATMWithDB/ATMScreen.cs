@@ -23,8 +23,8 @@ public enum SecureMenu
     [Description("Transaction")]
     ViewTransaction = 5,
 
-    [Description("Change PIN")]
-    ChangePIN = 6,
+    [Description("Change ATM Card PIN")]
+    ChangeATMCardPIN = 6,
 
     [Description("Logout")]
     Logout = 7
@@ -36,17 +36,13 @@ public static class ATMScreen
     internal static string cur = "RM ";
 
     #region ATM UI Forms
-    public static VMThirdPartyTransfer ThirdPartyTransferForm(){
-        var vMThirdPartyTransfer = new VMThirdPartyTransfer();
+    public static BankATMRepo.VMThirdPartyTransfer ThirdPartyTransferForm(){
+        var vMThirdPartyTransfer = new BankATMRepo.VMThirdPartyTransfer();
 
-        ///Console.Write("\nRecipient's account number: ");
-        //vMThirdPartyTransfer.RecipientBankAccountNumber = Convert.ToInt64(Console.ReadLine()); // no validation here yet.
         vMThirdPartyTransfer.RecipientBankAccountNumber = Utility.GetValidIntInputAmt("recipient's account number");
 
-        //Console.Write($"\nTransfer amount: {cur}");
-        vMThirdPartyTransfer.TransferAmount = Utility.GetValidDecimalInputAmt("amount");
+        vMThirdPartyTransfer.TransferAmount = Utility.GetValidDecimalInputAmt($"amount {cur}");
 
-        //Console.Write("\nRecipient's account name: ");
         vMThirdPartyTransfer.RecipientBankAccountName = Utility.GetRawInput("recipient's account name");
         // no validation here yet.
 
@@ -79,15 +75,11 @@ public static class ATMScreen
         Console.WriteLine("| 3. Withdrawal              |");
         Console.WriteLine("| 4. Third Party Transfer    |");
         Console.WriteLine("| 5. Transactions            |");
-        Console.WriteLine("| 6. Logout                  |");
+        Console.WriteLine("| 6. Change ATM Card PIN     |");
+        Console.WriteLine("| 7. Logout                  |");
         Console.WriteLine("|                            |");
         Console.WriteLine(" ---------------------------");
     }
     #endregion
-
-    
-
-
-
-
+   
 }

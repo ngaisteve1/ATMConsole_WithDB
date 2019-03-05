@@ -80,7 +80,7 @@ namespace BankATMAdmin
                 if (username.Equals("admin") && password.Equals("abc123"))
                     pass = true;
                 else
-                    Utility.PrintMessage("Invalid Card number or PIN.", false);
+                    Utility.PrintMessage("Invalid username or password.", false);
 
 
                 Console.Clear();
