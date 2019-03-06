@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BankATMRepo;
+using BankATMRepository;
 
 namespace MeybankATMSystem
 {
-    class MeybankATM : ILogin, IBalance, IDeposit, IWithdrawal, IThirdPartyTransfer, ITransaction
+    class MeybankATM : ILogin, IBalance, IDeposit, IWithdrawal, IThirdPartyTransfer
     {
         private static int tries;
         private const int maxTries = 3;
@@ -24,6 +25,20 @@ namespace MeybankATMSystem
 
         // Connect to the database using db context object.
         private AppDbContext db = new AppDbContext();
+
+        private IBankAccount repoBankAccount = null;
+        private ITransaction repoTransaction = null;
+
+        public MeybankATM()
+        {
+            this.repoBankAccount = new RepoBankAccount();
+            this.repoTransaction = new RepoTransaction();
+        }
+        public MeybankATM(IBankAccount repoBankAccount, ITransaction repoTransaction)
+        {
+            this.repoBankAccount = repoBankAccount;
+            this.repoTransaction = repoTransaction;
+        }
 
 
         public void Execute()
@@ -217,7 +232,8 @@ namespace MeybankATMSystem
                     TransactionAmount = transaction_amt,
                     TransactionDate = DateTime.Now
                 };
-                InsertTransaction(account, transaction);
+                //InsertTransaction(transaction);
+                repoTransaction.InsertTransaction(transaction);
                 // Add transaction record - End
 
                 // Another method to update account balance.
@@ -257,7 +273,8 @@ namespace MeybankATMSystem
                     TransactionAmount = transaction_amt,
                     TransactionDate = DateTime.Now
                 };
-                InsertTransaction(account, transaction);
+                //InsertTransaction(transaction);
+                repoTransaction.InsertTransaction(transaction);
                 // Add transaction record - End
 
                 // Another method to update account balance.
@@ -319,15 +336,15 @@ namespace MeybankATMSystem
             }
         }
 
-        public void InsertTransaction(BankAccount bankAccount, Transaction transaction)
-        {
-            // Without Entity Framework - _listOfTransactions.Add(transaction);
-            // With Entity Framework
-            db.Transactions.Add(transaction);
+        //public void InsertTransaction(Transaction transaction)
+        //{
+        //    // Without Entity Framework - _listOfTransactions.Add(transaction);
+        //    // With Entity Framework
+        //    db.Transactions.Add(transaction);
 
-            // With Entity Framework
-            db.SaveChanges();
-        }
+        //    // With Entity Framework
+        //    db.SaveChanges();
+        //}
 
         public void PerformThirdPartyTransfer(BankAccount bankAccount, BankATMRepo.VMThirdPartyTransfer vMThirdPartyTransfer)
         {
@@ -370,7 +387,8 @@ namespace MeybankATMSystem
                     };
                     // Without Entity framework - _listOfTransactions.Add(transaction);
                     // With Entity Framework
-                    db.Transactions.Add(transaction);
+                    //db.Transactions.Add(transaction);
+                    repoTransaction.InsertTransaction(transaction);
 
                     Utility.PrintMessage($"You have successfully transferred out {Utility.FormatAmount(vMThirdPartyTransfer.TransferAmount)} to {vMThirdPartyTransfer.RecipientBankAccountName}", true);
                     // Add transaction record - End
