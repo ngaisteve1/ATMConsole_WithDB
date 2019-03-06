@@ -8,7 +8,7 @@ This version stored data in the database using Entity Framework with extra requi
 
 ### Software Development Summary
 - Technology: C#
-- ORM Framework: Entity Framework 6.2
+- ORM Framework: Entity Framework 6.2 (Code-First Approach)
 - Framework: .NET Framework 4.6.1
 - Total Projects: 3 (1 Class Library project and 2 Console Projects)
 - IDE: Visual Studio Community 2017
