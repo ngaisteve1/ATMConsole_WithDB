@@ -1,9 +1,8 @@
+using BankATMRepository;
+using BankATMRepositoryInterface;
 using ConsoleTables;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using BankATMRepo;
-using BankATMRepository;
 
 namespace MeybankATMSystem
 {

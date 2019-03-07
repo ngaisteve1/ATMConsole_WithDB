@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-namespace BankATMRepository
+namespace BankATMRepositoryInterface
 {
     public interface ITransaction
     {
