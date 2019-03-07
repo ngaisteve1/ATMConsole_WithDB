@@ -3,6 +3,7 @@ using BankATMRepositoryInterface;
 using ConsoleTables;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MeybankATMSystem
 {
@@ -17,13 +18,14 @@ namespace MeybankATMSystem
 
         // No longer store data using list . Replace it with dbcontext ('virtual local db') object. 
        // private static List<BankAccount> _accountList;
-        private static List<Transaction> _listOfTransactions;
+        //private static List<Transaction> _listOfTransactions;
         private static BankAccount selectedAccount;
         private static BankAccount inputAccount;
 
 
         // Connect to the database using db context object.
-        private AppDbContext db = new AppDbContext();
+        //private AppDbContext db = new AppDbContext();
+        private static AppDbContext ctx = new AppDbContext();
 
         private IBankAccount repoBankAccount = null;
         private ITransaction repoTransaction = null;
@@ -42,7 +44,6 @@ namespace MeybankATMSystem
 
         public void Execute()
         {
-            //Initialization();
             ATMScreen.ShowMenu1();
 
             while (true)
@@ -52,7 +53,7 @@ namespace MeybankATMSystem
                     case 1:
                         CheckCardNoPassword();
 
-                        _listOfTransactions = new List<Transaction>();
+                        //_listOfTransactions = new List<Transaction>();
 
                         while (true)
                         {
@@ -76,7 +77,7 @@ namespace MeybankATMSystem
                                     PerformThirdPartyTransfer(selectedAccount, vMThirdPartyTransfer);
                                     break;
                                 case (int)SecureMenu.ViewTransaction:
-                                    ViewTransaction(selectedAccount.AccountNumber);
+                                    ViewTransaction(selectedAccount.Id);
                                     break;
 
                                 case (int)SecureMenu.Logout:
@@ -229,6 +230,7 @@ namespace MeybankATMSystem
                 // Add transaction record - Start
                 var transaction = new Transaction()
                 {
+                    AccountID = account.Id,
                     BankAccountNoTo = account.AccountNumber,
                     TransactionType = TransactionType.Deposit,
                     TransactionAmount = transaction_amt,
@@ -242,7 +244,7 @@ namespace MeybankATMSystem
                 account.Balance = account.Balance + transaction_amt;
 
                 // Entity framework. To sync changes from dbcontext ('virtual local db') to physical db.
-                db.SaveChanges();
+                ctx.SaveChanges();
 
                 Utility.PrintMessage($"You have successfully deposited {Utility.FormatAmount(transaction_amt)}", true);
             }
@@ -269,6 +271,7 @@ namespace MeybankATMSystem
                 // Add transaction record - Start
                 var transaction = new Transaction()
                 {
+                    AccountID = account.Id,
                     BankAccountNoFrom = account.AccountNumber,
                     TransactionType = TransactionType.Withdrawal,
                     TransactionAmount = transaction_amt,
@@ -282,7 +285,7 @@ namespace MeybankATMSystem
                 account.Balance = account.Balance - transaction_amt;
 
                 // Entity framework. To sync changes from dbcontext ('virtual local db') to physical db.
-                db.SaveChanges();
+                ctx.SaveChanges();
 
                 Utility.PrintMessage($"Please collect your money. You have successfully withdraw {Utility.FormatAmount(transaction_amt)}", true);
             }
@@ -308,18 +311,18 @@ namespace MeybankATMSystem
             return (opt.Equals("1")) ? true : false;
         }
 
-        public void ViewTransaction(long accountNumber)
+        public void ViewTransaction(int accountID)
         {
 
             //Without Entity Framework - if (_listOfTransactions.Count <= 0)
             // Before repository layer - db.Transactions.Count() 
             // After repository layer,
             //if (repoTransaction.GetTransactionCount(accountNumber) == 0)
-            if (accountNumber == 1)
+            if (repoTransaction.GetTransactionCount(accountID) == 0)
                 Utility.PrintMessage($"There is no transaction yet.", true);
             else
             {
-                var table = new ConsoleTable("Id","Type", "From", "To", "Amount " + ATMScreen.cur, "Trans Date Time");
+                var table = new ConsoleTable("Id","Type", "From", "To", "Amount", "Trans Date Time");
 
                 // Without Entity Framework - foreach (var tran in _listOfTransactions)
 
@@ -328,21 +331,23 @@ namespace MeybankATMSystem
                 //var transactionsOrder = (from t in db.Transactions
                 //                        orderby t.TransactionDate descending
                 //                        select t).Take(5); // SELECT Top 5
-                
+
                 // With repository layer,
-               
-                foreach (var tran in repoTransaction.ViewTopLatestTransactions(accountNumber, 5))
+
+                Console.WriteLine(repoTransaction.GetTransactionCount(accountID));
+
+                foreach (var tran in repoTransaction.ViewTopLatestTransactions(accountID, 5))
                 {
-                    table.AddRow(tran.TransactionId,tran.TransactionType, tran.BankAccountNoFrom, tran.BankAccountNoTo, tran.TransactionAmount,
+                    table.AddRow(tran.TransactionId,tran.TransactionType, tran.BankAccountNoFrom, tran.BankAccountNoTo, Utility.FormatAmount(tran.TransactionAmount),
                     tran.TransactionDate);
                 }
                 table.Options.EnableCount = false;
                 table.Write();
 
                 //Without Entity Framework - Utility.PrintMessage($"You have performed {_listOfTransactions.Count} transactions.", true);
-                //Utility.PrintMessage($"You have performed {repoTransaction.GetTransactionCount(accountNumber)} transactions.", true);
+                Utility.PrintMessage($"You have performed {repoTransaction.GetTransactionCount(accountID)} transactions.", true);
             }
-        }
+        }        
 
         //public void InsertTransaction(Transaction transaction)
         //{
@@ -391,6 +396,7 @@ namespace MeybankATMSystem
                     // Add transaction record - Start
                     Transaction transaction = new Transaction()
                     {
+                        AccountID = bankAccount.Id,
                         BankAccountNoFrom = bankAccount.AccountNumber,
                         BankAccountNoTo = vMThirdPartyTransfer.RecipientBankAccountNumber,
                         TransactionType = TransactionType.ThirdPartyTransfer,
@@ -412,7 +418,7 @@ namespace MeybankATMSystem
                     selectedBankAccountReceiver.Balance = selectedBankAccountReceiver.Balance + vMThirdPartyTransfer.TransferAmount;
 
                     // With Entity framework. To sync changes from dbcontext ('virtual local db') to physical db.
-                    db.SaveChanges();
+                    ctx.SaveChanges();
                 }
             }
         }    

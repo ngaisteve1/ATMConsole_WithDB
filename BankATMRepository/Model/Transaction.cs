@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class Transaction
 {
@@ -8,6 +9,12 @@ public class Transaction
     public TransactionType TransactionType { get; set; }
     public decimal TransactionAmount { get; set; }
     public DateTime TransactionDate { get; set; }
+
+    // Foreign Key
+    public int AccountID { get; set; }
+
+    //  Navigation Property
+    public BankAccount bankAccount { get; set; }
 }
 
 public enum TransactionType

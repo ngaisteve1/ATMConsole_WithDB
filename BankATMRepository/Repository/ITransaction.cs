@@ -5,9 +5,9 @@ namespace BankATMRepositoryInterface
     {
         void InsertTransaction(Transaction transaction);
         
-        IEnumerable<Transaction> ViewTopLatestTransactions(long accountNumber, int top);
+        IEnumerable<Transaction> ViewTopLatestTransactions(int accountID, int top);
 
-        int GetTransactionCount(long accountNumber);
+        int GetTransactionCount(int accountID);
         
         void Save();
 
