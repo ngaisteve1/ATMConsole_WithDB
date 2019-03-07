@@ -26,14 +26,27 @@ namespace BankATMRepository
             Save();
         }
 
-        public IEnumerable<Transaction> ViewAllTransaction(long accountNumber)
+        public IEnumerable<Transaction> ViewTopLatestTransactions(long accountNumber, int top = 10)
         {
-            return db.Transactions.Where(t => t.BankAccountNoFrom.Equals(accountNumber)).ToList();
+            return db.Transactions
+                .Where(t => t.BankAccountNoFrom.Equals(accountNumber))
+                .OrderByDescending(t => t.TransactionDate)
+                .Take(top)
+                .ToList();
+        }
+
+        public int GetTransactionCount(long accountNumber)
+        {
+            //return db.Transactions.Where(t => t.BankAccountNoFrom == accountNumber).Count();
+            return db.Transactions.Count();
+            
         }
 
         public void Save()
         {
             db.SaveChanges();
         }
+
+
     }
 }

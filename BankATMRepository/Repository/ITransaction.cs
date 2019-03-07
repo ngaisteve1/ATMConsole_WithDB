@@ -4,11 +4,11 @@ namespace BankATMRepository
     public interface ITransaction
     {
         void InsertTransaction(Transaction transaction);
+        
+        IEnumerable<Transaction> ViewTopLatestTransactions(long accountNumber, int top);
 
-        //void ViewTransaction();
-
-        IEnumerable<Transaction> ViewAllTransaction(long accountNumber);
-
+        int GetTransactionCount(long accountNumber);
+        
         void Save();
 
     }

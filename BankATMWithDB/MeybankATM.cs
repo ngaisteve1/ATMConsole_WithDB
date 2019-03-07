@@ -77,7 +77,7 @@ namespace MeybankATMSystem
                                     PerformThirdPartyTransfer(selectedAccount, vMThirdPartyTransfer);
                                     break;
                                 case (int)SecureMenu.ViewTransaction:
-                                    ViewTransaction();
+                                    ViewTransaction(selectedAccount.AccountNumber);
                                     break;
 
                                 case (int)SecureMenu.Logout:
@@ -152,8 +152,12 @@ namespace MeybankATMSystem
                 Utility.printDotAnimation();
 
                 // LINQ Query
-                var listOfAccounts = from a in db.BankAccounts
-                                     select a;
+                // Without repository layer
+                //var listOfAccounts = from a in db.BankAccounts
+                //                     select a;
+
+                // With repository layer
+                var listOfAccounts = repoBankAccount.ViewAllBankAccount();
 
                 // Without Entity Framework
                 //foreach (BankAccount account in _accountList)
@@ -226,7 +230,6 @@ namespace MeybankATMSystem
                 // Add transaction record - Start
                 var transaction = new Transaction()
                 {
-                    BankAccountNoFrom = account.AccountNumber,
                     BankAccountNoTo = account.AccountNumber,
                     TransactionType = TransactionType.Deposit,
                     TransactionAmount = transaction_amt,
@@ -268,7 +271,6 @@ namespace MeybankATMSystem
                 var transaction = new Transaction()
                 {
                     BankAccountNoFrom = account.AccountNumber,
-                    BankAccountNoTo = account.AccountNumber,
                     TransactionType = TransactionType.Withdrawal,
                     TransactionAmount = transaction_amt,
                     TransactionDate = DateTime.Now
@@ -307,23 +309,30 @@ namespace MeybankATMSystem
             return (opt.Equals("1")) ? true : false;
         }
 
-        public void ViewTransaction()
+        public void ViewTransaction(long accountNumber)
         {
 
             //Without Entity Framework - if (_listOfTransactions.Count <= 0)
-            if (db.Transactions.Count() <= 0)
+            // Before repository layer - db.Transactions.Count() 
+            // After repository layer,
+            //if (repoTransaction.GetTransactionCount(accountNumber) == 0)
+            if (accountNumber == 1)
                 Utility.PrintMessage($"There is no transaction yet.", true);
             else
             {
                 var table = new ConsoleTable("Id","Type", "From", "To", "Amount " + ATMScreen.cur, "Trans Date Time");
 
                 // Without Entity Framework - foreach (var tran in _listOfTransactions)
+
                 // With Entity Framework
-                var transactionsOrder = (from t in db.Transactions
-                                        orderby t.TransactionDate descending
-                                        select t).Take(5); // SELECT Top 5
-                                        
-                foreach (var tran in transactionsOrder)
+                // Without repository layer
+                //var transactionsOrder = (from t in db.Transactions
+                //                        orderby t.TransactionDate descending
+                //                        select t).Take(5); // SELECT Top 5
+                
+                // With repository layer,
+               
+                foreach (var tran in repoTransaction.ViewTopLatestTransactions(accountNumber, 5))
                 {
                     table.AddRow(tran.TransactionId,tran.TransactionType, tran.BankAccountNoFrom, tran.BankAccountNoTo, tran.TransactionAmount,
                     tran.TransactionDate);
@@ -332,7 +341,7 @@ namespace MeybankATMSystem
                 table.Write();
 
                 //Without Entity Framework - Utility.PrintMessage($"You have performed {_listOfTransactions.Count} transactions.", true);
-                Utility.PrintMessage($"You have performed {db.Transactions.Count()} transactions.", true);
+                //Utility.PrintMessage($"You have performed {repoTransaction.GetTransactionCount(accountNumber)} transactions.", true);
             }
         }
 
@@ -365,9 +374,13 @@ namespace MeybankATMSystem
                 //                                   select b).FirstOrDefault();
 
                 // With Entity framework
-                var selectedBankAccountReceiver = (from b in db.BankAccounts
-                                                   where b.AccountNumber == vMThirdPartyTransfer.RecipientBankAccountNumber
-                                                   select b).FirstOrDefault();
+                // Without repository layer
+                //var selectedBankAccountReceiver = (from b in db.BankAccounts
+                //                                   where b.AccountNumber == vMThirdPartyTransfer.RecipientBankAccountNumber
+                //                                   select b).FirstOrDefault();
+
+                // With repository layer
+                var selectedBankAccountReceiver = repoBankAccount.ViewBankAccount(vMThirdPartyTransfer.RecipientBankAccountNumber);
 
                 if (selectedBankAccountReceiver == null)
                     Utility.PrintMessage($"Third party transfer failed. Receiver bank account number is invalid.", false);
@@ -403,8 +416,6 @@ namespace MeybankATMSystem
                     db.SaveChanges();
                 }
             }
-        }
-
-       
+        }    
     }
 }
