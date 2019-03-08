@@ -11,6 +11,7 @@ This version stored data in the database using Entity Framework with extra requi
 - ORM Framework: Entity Framework 6.2 (Code-First Approach)
 - Framework: .NET Framework 4.6.1
 - Total Projects: 3 (1 Class Library project and 2 Console Projects)
+- Solution Structure Design: Repository General CRUD interface layer, Use Case interface layer
 - IDE: Visual Studio Community 2017
 - Paradigm or pattern of programming: Object-Oriented Programming (OOP)
 - Data: Data of this demo program (Bank Account and Transaction data) are stored in SQL Server database using Entity Framework ORM.
