@@ -23,6 +23,8 @@ This version stored data in the database using Entity Framework with extra requi
 - [x] Check card number and pin against bank account list object (Note: No database is used on purpose to demo the use of list object)
 - [x] Make third-party-transfer (Transfer within the same bank but different account number)
 - [x] View bank transactions
+- [x] View account details
+- [ ] Change ATM Card Pin
 
 ### <img class="emoji" alt="atm" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3e7.png"> <img class="emoji" alt="credit_card" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4b3.png"> ATM Basic Features / Use Cases (Bank Administrator):
 - [x] Add 3 sample bank account (Seeding)
@@ -33,7 +35,7 @@ This version stored data in the database using Entity Framework with extra requi
 - User is not allow to withdraw or transfer more than the balance amount. A minimum RM20 is needed to maintain the bank account.
 - If user key in the wrong pin more than 3 times, the bank account will be locked.
 - Cannot duplicate NRIC
-- Starting account balance needs minimum RM50.00
+- Starting account balance needs minimum RM20.00 (Saving Account) and RM500 (Current Account).
 - Card PIN code needs to be 6 digit number.
 - Account number is 7 digit (auto-generated for this demo)
 - ATM Card Number is 9 digit (auto-generated for this demo)
