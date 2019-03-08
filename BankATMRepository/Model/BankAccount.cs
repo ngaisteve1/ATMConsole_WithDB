@@ -8,7 +8,7 @@ public class BankAccount
     public string FullName { get; set; }
 
     public string NRIC { get; set; }
-
+    public AccountType AccountType { get; set; }
     public long AccountNumber { get; set; }
     public long CardNumber { get; set; }
     public long PinCode { get; set; }
@@ -18,5 +18,10 @@ public class BankAccount
 
     // Navigation Property
     public ICollection<Transaction> Transactions { get; set; }
+}
+
+public enum AccountType
+{
+    SavingAccount, CurrentAccount
 }
 

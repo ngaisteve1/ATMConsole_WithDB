@@ -67,6 +67,18 @@ namespace BankATMAdmin
             Console.WriteLine("Example of NRIC, 900210-10-8080");
             newBankAccountForm.NRIC = Utility.GetValidStringInput("NRIC");
 
+            
+            switch (Utility.GetValidStringInput("Account Type. (S)aving or (C)urrent account"))
+            {
+                case "S":
+                    newBankAccountForm.AccountType = AccountType.SavingAccount;
+                    break;
+                case "C":
+                    newBankAccountForm.AccountType = AccountType.CurrentAccount;
+                    break;
+                default:
+                    break;
+            }
 
             // Variation. Auto generate a random account number or from a running sequence number
             //newBankAccountForm.AccountNumber = Utility.GetValidIntInputAmt("account number");
