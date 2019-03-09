@@ -79,7 +79,7 @@ namespace MeybankATMSystem
                                 case (int)SecureMenu.ViewTransaction:
                                     ViewTransaction(selectedAccount.Id);
                                     break;
-                                case (int)SecureMenu.ChangeCardPINCode:
+                                case (int)SecureMenu.ChangeATMCardPIN:
                                     Console.WriteLine("This function is not ready.");
                                     break;
                                 case (int)SecureMenu.Logout:
