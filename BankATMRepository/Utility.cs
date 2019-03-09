@@ -24,19 +24,17 @@ public static class Utility
         return amount;
     }
 
-    public static Int64 GetValidIntInputAmt(string input)
+    public static long GetValidIntInputAmt(string input)
     {
         bool valid = false;
         string rawInput;
-        Int64 amount = 0;
+        long amount = 0;
 
         // Get user's input input type is valid
         while (!valid)
         {
             rawInput = GetRawInput(input);
-            valid = Int64.TryParse(rawInput, out amount);
-
-
+            valid = long.TryParse(rawInput, out amount);
 
             if (!valid)
                 PrintMessage("Invalid input. Try again.", false);
@@ -49,21 +47,16 @@ public static class Utility
     {
         bool valid = false;
         string rawInput = "";
-        
+
         // Get user's input input type is valid
         while (!valid)
         {
             rawInput = GetRawInput(input);
             if (string.IsNullOrEmpty(rawInput))
-            {
                 PrintMessage("Invalid input. Try again.", false);
-            }
-                
             else
-            {
                 valid = true;
-            }
-               
+
         }
 
         return rawInput;

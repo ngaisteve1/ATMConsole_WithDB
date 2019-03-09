@@ -1,23 +1,27 @@
-﻿
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 public class BankAccount
 {
     public int Id { get; set; }
 
-    [Required]
     public string FullName { get; set; }
 
-    //[Required]
-    //[MaxLength(15, ErrorMessage ="Enter valid length")]
     public string NRIC { get; set; }
-
-    public Int64 AccountNumber { get; set; }
-    public Int64 CardNumber { get; set; }
-    public Int64 PinCode { get; set; }
+    public AccountType AccountType { get; set; }
+    public long AccountNumber { get; set; }
+    public long CardNumber { get; set; }
+    public long PinCode { get; set; }
     public decimal Balance { get; set; }
 
     public bool isLocked { get; set; } = false;
+
+    // Navigation Property
+    public ICollection<Transaction> Transactions { get; set; }
+}
+
+public enum AccountType
+{
+    SavingAccount, CurrentAccount
 }
 

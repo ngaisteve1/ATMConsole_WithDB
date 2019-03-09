@@ -1,13 +1,26 @@
-﻿using BankATMAdmin.Interface;
+﻿using BankATMRepository;
+using BankATMRepositoryInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace BankATMAdmin
 {
-    class MeyBankATMAdmin : IBankAccount
+    class MeyBankATMAdmin
     {
         private static AppDbContext db = new AppDbContext();
+
+        private IBankAccount repoBankAccount = null;
+        
+        public MeyBankATMAdmin()
+        {
+            this.repoBankAccount = new RepoBankAccount();
+        }
+
+        public MeyBankATMAdmin(IBankAccount repoBankAccount)
+        {
+            this.repoBankAccount = repoBankAccount;
+        }
 
         public void Execute()
         {
@@ -80,7 +93,7 @@ namespace BankATMAdmin
                 if (username.Equals("admin") && password.Equals("abc123"))
                     pass = true;
                 else
-                    Utility.PrintMessage("Invalid Card number or PIN.", false);
+                    Utility.PrintMessage("Invalid username or password.", false);
 
 
                 Console.Clear();
@@ -108,9 +121,14 @@ namespace BankATMAdmin
             {
 
                 foreach (var acct in _accountList)
-                    db.BankAccounts.Add(acct);
+                    // Without Repository layer
+                    //db.BankAccounts.Add(acct);
 
-                db.SaveChanges();
+                    // With Repository layer,
+                    repoBankAccount.InsertBankAccount(acct);
+
+                // Without Repository layer
+                //db.SaveChanges();
                 Utility.PrintMessage($"{_accountList.Count} Sample bank account added successfully.", true);
             }
             finally
@@ -125,8 +143,13 @@ namespace BankATMAdmin
 
             try
             {
-                db.BankAccounts.Add(_bankAccount);
-                db.SaveChanges();
+                // Without Repository layer,
+                //db.BankAccounts.Add(_bankAccount);
+                //db.SaveChanges();
+
+                // With Repository layer,
+                repoBankAccount.InsertBankAccount(_bankAccount);
+
                 Utility.PrintMessage("Bank account added successfully.", true);
             }
             finally
@@ -148,10 +171,13 @@ namespace BankATMAdmin
             {
                 newBankAccount.AccountNumber = Utility.GetValidIntInputAmt("account number");
 
-                // todo: architecture upgrade: move LINQ query to Repository layer. Call data by method and parameter.
-                selectedBankAccount = (from b in db.BankAccounts
-                                       where b.AccountNumber.Equals(newBankAccount.AccountNumber)
-                                       select b).FirstOrDefault();
+                // Without Repository layer
+                //selectedBankAccount = (from b in db.BankAccounts
+                //                       where b.AccountNumber.Equals(newBankAccount.AccountNumber)
+                //                       select b).FirstOrDefault();
+
+                // With Repository layer
+                selectedBankAccount = repoBankAccount.ViewBankAccount(newBankAccount.AccountNumber);
 
                 if (selectedBankAccount != null)
                     validAccount = true;
@@ -179,8 +205,13 @@ namespace BankATMAdmin
             switch (opt2.ToUpper())
             {
                 case "Y":
-                    db.BankAccounts.Remove(_bankAccount);
-                    db.SaveChanges();
+                    // Without Repository layer
+                    //db.BankAccounts.Remove(_bankAccount);
+                    //db.SaveChanges();
+
+                    // With Repository layer
+                    repoBankAccount.DeleteBankAccount(_bankAccount);
+
                     Utility.PrintMessage("Selected bank account successfully deleted.", true);
 
                     break;
@@ -220,12 +251,7 @@ namespace BankATMAdmin
             }
         }
 
-
-
-
-
         #endregion
-
 
     }
 }
