@@ -109,7 +109,7 @@ namespace BankATMAdmin
             
             db.Database.ExecuteSqlCommand("DELETE FROM BankAccounts");
             db.Database.ExecuteSqlCommand("DELETE FROM Transactions");
-            Utility.PrintMessage("Cleared alll data in the database.",false);
+            Utility.PrintMessage("Cleared all data in the database.",false);
 
             var _accountList = new List<BankAccount>
             {
