@@ -36,6 +36,22 @@ public static class ATMScreen
     internal static string cur = "RM ";
 
     #region ATM UI Forms
+    public static decimal DepositForm()
+    {
+        Console.WriteLine("\nNote: Actual ATM system will just let you ");
+        Console.Write("place bank notes into ATM machine. \n\n");
+
+        return Utility.GetValidDecimalInputAmt($"amount {cur}"); ;
+    }
+
+    public static decimal WithdrawalForm()
+    {
+        Console.WriteLine("\nNote: For GUI or actual ATM system, user can ");
+        Console.Write("choose some default withdrawal amount or custom amount. \n\n");
+        
+        return Utility.GetValidDecimalInputAmt($"amount {cur}"); ;
+    }
+
     public static BankATMRepo.VMThirdPartyTransfer ThirdPartyTransferForm(){
         var vMThirdPartyTransfer = new BankATMRepo.VMThirdPartyTransfer();
 
@@ -48,6 +64,8 @@ public static class ATMScreen
 
         return vMThirdPartyTransfer;
     }
+
+
     #endregion
 
     #region UIOutput - ATM Menu

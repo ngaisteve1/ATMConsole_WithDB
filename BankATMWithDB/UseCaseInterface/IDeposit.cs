@@ -1,3 +1,3 @@
 public interface IDeposit{
-    void PlaceDeposit(BankAccount bankAccount);
+    void PlaceDeposit(BankAccount bankAccount, decimal transactionAmount);
 }

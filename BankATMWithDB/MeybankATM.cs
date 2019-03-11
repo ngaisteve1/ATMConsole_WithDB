@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace MeybankATMSystem
 {
-    class MeybankATM : ILogin, IBalance, IDeposit, IWithdrawal, IThirdPartyTransfer
+    public class MeybankATM : ILogin, IBalance, IDeposit, IWithdrawal, IThirdPartyTransfer
     {
         private static int tries;
         private const int maxTries = 3;
@@ -27,18 +27,20 @@ namespace MeybankATMSystem
         //private AppDbContext db = new AppDbContext();
         private static AppDbContext ctx = new AppDbContext();
 
-        private IBankAccount repoBankAccount = null;
-        private ITransaction repoTransaction = null;
+        private readonly IBankAccount repoBankAccount = null;
+        private readonly ITransaction repoTransaction = null;
+        private readonly IMessagePrinter _msgPrinter;
 
         public MeybankATM()
         {
             this.repoBankAccount = new RepoBankAccount();
             this.repoTransaction = new RepoTransaction();
         }
-        public MeybankATM(IBankAccount repoBankAccount, ITransaction repoTransaction)
+        public MeybankATM(IBankAccount repoBankAccount, ITransaction repoTransaction, IMessagePrinter msgPrinter)
         {
             this.repoBankAccount = repoBankAccount;
             this.repoTransaction = repoTransaction;
+            _msgPrinter = msgPrinter;
         }
 
 
@@ -62,16 +64,28 @@ namespace MeybankATMSystem
                             switch (Utility.GetValidIntInputAmt("your option"))
                             {
                                 case (int)SecureMenu.CheckBalance:
+                                    // Get
                                     CheckBalance(selectedAccount);
                                     break;
                                 case (int)SecureMenu.PlaceDeposit:
-                                    PlaceDeposit(selectedAccount);
+                                    // Get
+                                    transaction_amt = ATMScreen.DepositForm();
+
+                                    // Post
+                                    PlaceDeposit(selectedAccount, transaction_amt);
                                     break;
                                 case (int)SecureMenu.MakeWithdrawal:
-                                    MakeWithdrawal(selectedAccount);
+                                    // Get
+                                    transaction_amt = ATMScreen.WithdrawalForm();
+
+                                    // Post
+                                    MakeWithdrawal(selectedAccount, transaction_amt);
                                     break;
                                 case (int)SecureMenu.ThirdPartyTransfer:
+                                    // Get
                                     var vMThirdPartyTransfer = new BankATMRepo.VMThirdPartyTransfer();
+
+                                    // Post
                                     vMThirdPartyTransfer = ATMScreen.ThirdPartyTransferForm();
 
                                     PerformThirdPartyTransfer(selectedAccount, vMThirdPartyTransfer);
@@ -176,13 +190,10 @@ namespace MeybankATMSystem
                             if (selectedAccount.isLocked)
                                 LockAccount();
                             else
-                                pass = true;
-
-
+                                pass = true;                            
                         }
                         else
                         {
-
                             pass = false;
                             tries++;
 
@@ -209,23 +220,19 @@ namespace MeybankATMSystem
             Utility.PrintMessage($"Your bank account balance amount is: {Utility.FormatAmount(bankAccount.Balance)}", true);
         }
 
-        public void PlaceDeposit(BankAccount account)
-        {
+        public void PlaceDeposit(BankAccount account, decimal _transaction_amt)
+        {   
+            //transaction_amt = Utility.GetValidDecimalInputAmt($"amount in {ATMScreen.cur}");
 
-            Console.WriteLine("\nNote: Actual ATM system will just let you ");
-            Console.Write("place bank notes into ATM machine. \n\n");
-            
-            transaction_amt = Utility.GetValidDecimalInputAmt($"amount in {ATMScreen.cur}");
-
-            System.Console.Write("\nCheck and counting bank notes.");
+            Console.Write("\nCheck and counting bank notes.");
             Utility.printDotAnimation();
 
-            if (transaction_amt <= 0)
-                Utility.PrintMessage("Amount needs to be more than zero. Try again.", false);
-            else if (transaction_amt % 10 != 0)
-                Utility.PrintMessage($"Key in the deposit amount only with multiply of 10. Try again.", false);
-            else if (!PreviewBankNotesCount(transaction_amt))
-                Utility.PrintMessage($"You have cancelled your action.", false);
+            if (_transaction_amt <= 0)
+                _msgPrinter.PrintMessage("Amount needs to be more than zero. Try again.", false);
+            else if (_transaction_amt % 10 != 0)
+                _msgPrinter.PrintMessage($"Key in the deposit amount only with multiply of 10. Try again.", false);
+            else if (!PreviewBankNotesCount(_transaction_amt))
+                _msgPrinter.PrintMessage($"You have cancelled your action.", false);
             else
             {
                 // Bind transaction_amt to Transaction object
@@ -235,7 +242,7 @@ namespace MeybankATMSystem
                     AccountID = account.Id,
                     BankAccountNoTo = account.AccountNumber,
                     TransactionType = TransactionType.Deposit,
-                    TransactionAmount = transaction_amt,
+                    TransactionAmount = _transaction_amt,
                     TransactionDate = DateTime.Now
                 };
                 //InsertTransaction(transaction);
@@ -243,29 +250,26 @@ namespace MeybankATMSystem
                 // Add transaction record - End
 
                 // Another method to update account balance.
-                account.Balance = account.Balance + transaction_amt;
+                account.Balance = account.Balance + _transaction_amt;
 
                 // Entity framework. To sync changes from dbcontext ('virtual local db') to physical db.
                 ctx.SaveChanges();
 
-                Utility.PrintMessage($"You have successfully deposited {Utility.FormatAmount(transaction_amt)}", true);
+                _msgPrinter.PrintMessage($"You have successfully deposited {Utility.FormatAmount(_transaction_amt)}", true);
             }
         }
 
-        public void MakeWithdrawal(BankAccount account)
-        {
-            Console.WriteLine("\nNote: For GUI or actual ATM system, user can ");
-            Console.Write("choose some default withdrawal amount or custom amount. \n\n");
-            
-            transaction_amt = Utility.GetValidDecimalInputAmt($"amount {ATMScreen.cur}");
+        public void MakeWithdrawal(BankAccount account, decimal _transaction_amt)
+        {         
+           // transaction_amt = Utility.GetValidDecimalInputAmt($"amount {ATMScreen.cur}");
 
-            if (transaction_amt <= 0)
+            if (_transaction_amt <= 0)
                 Utility.PrintMessage("Amount needs to be more than zero. Try again.", false);
-            else if (transaction_amt > account.Balance)
-                Utility.PrintMessage($"Withdrawal failed. You do not have enough fund to withdraw {Utility.FormatAmount(transaction_amt)}", false);
-            else if ((account.Balance - transaction_amt) < minimum_kept_amt)
+            else if (_transaction_amt > account.Balance)
+                Utility.PrintMessage($"Withdrawal failed. You do not have enough fund to withdraw {Utility.FormatAmount(_transaction_amt)}", false);
+            else if ((account.Balance - _transaction_amt) < minimum_kept_amt)
                 Utility.PrintMessage($"Withdrawal failed. Your account needs to have minimum {Utility.FormatAmount(minimum_kept_amt)}", false);
-            else if (transaction_amt % 10 != 0)
+            else if (_transaction_amt % 10 != 0)
                 Utility.PrintMessage($"Key in the deposit amount only with multiply of 10. Try again.", false);
             else
             {
@@ -276,7 +280,7 @@ namespace MeybankATMSystem
                     AccountID = account.Id,
                     BankAccountNoFrom = account.AccountNumber,
                     TransactionType = TransactionType.Withdrawal,
-                    TransactionAmount = transaction_amt,
+                    TransactionAmount = _transaction_amt,
                     TransactionDate = DateTime.Now
                 };
                 //InsertTransaction(transaction);
@@ -284,12 +288,12 @@ namespace MeybankATMSystem
                 // Add transaction record - End
 
                 // Another method to update account balance.
-                account.Balance = account.Balance - transaction_amt;
+                account.Balance = account.Balance - _transaction_amt;
 
                 // Entity framework. To sync changes from dbcontext ('virtual local db') to physical db.
                 ctx.SaveChanges();
 
-                Utility.PrintMessage($"Please collect your money. You have successfully withdraw {Utility.FormatAmount(transaction_amt)}", true);
+                Utility.PrintMessage($"Please collect your money. You have successfully withdraw {Utility.FormatAmount(_transaction_amt)}", true);
             }
         }
 
