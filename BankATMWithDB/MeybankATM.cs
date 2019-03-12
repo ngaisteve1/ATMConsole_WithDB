@@ -94,7 +94,8 @@ namespace MeybankATMSystem
                                     ViewTransaction(selectedAccount.Id);
                                     break;
                                 case (int)SecureMenu.ChangeATMCardPIN:
-                                    Console.WriteLine("This function is not ready.");
+                                    Utility.PrintMessage("This function is not ready.", false);
+                                    
                                     break;
                                 case (int)SecureMenu.Logout:
                                     Utility.PrintMessage("You have succesfully logout. Please collect your ATM card..", true);
@@ -340,7 +341,7 @@ namespace MeybankATMSystem
 
                 // With repository layer,
 
-                Console.WriteLine(repoTransaction.GetTransactionCount(accountID));
+                //Console.WriteLine(repoTransaction.GetTransactionCount(accountID));
 
                 foreach (var tran in repoTransaction.ViewTopLatestTransactions(accountID, 5))
                 {
