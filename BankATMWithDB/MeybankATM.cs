@@ -228,6 +228,7 @@ namespace MeybankATMSystem
             Utility.printDotAnimation();
 
             if (_transaction_amt <= 0)
+                
                 _msgPrinter.PrintMessage("Amount needs to be more than zero. Try again.", false);
             else if (_transaction_amt % 10 != 0)
                 _msgPrinter.PrintMessage($"Key in the deposit amount only with multiply of 10. Try again.", false);
