@@ -15,9 +15,20 @@ namespace BankATMRepository
     {
         public string Message { get; private set; }
 
-        public void PrintMessage(string message, bool idontKnow)
+        public void PrintMessage(string message, bool success)
         {
-            Message = message;
+            //Message = message;
+            // Console UI.
+            if (success)
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            else
+                Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.WriteLine(message);
+            Console.ResetColor();
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+
         }
     }
 

@@ -17,8 +17,15 @@ public static class Utility
         {
             rawInput = GetRawInput(input);
             valid = decimal.TryParse(rawInput, out amount);
-            if (!valid)
+            if (!valid || amount == 0)
+            {
                 PrintMessage("Invalid input. Try again.", false);
+                valid = false;
+            }
+            else
+            {
+                valid = true;
+            }              
         }
 
         return amount;
@@ -37,7 +44,14 @@ public static class Utility
             valid = long.TryParse(rawInput, out amount);
 
             if (!valid)
+            {
                 PrintMessage("Invalid input. Try again.", false);
+                valid = false;
+            }
+            else
+            {
+                valid = true;
+            }
         }
 
         return amount;
@@ -53,7 +67,10 @@ public static class Utility
         {
             rawInput = GetRawInput(input);
             if (string.IsNullOrEmpty(rawInput))
+            {
                 PrintMessage("Invalid input. Try again.", false);
+                valid = false;
+            }
             else
                 valid = true;
 
