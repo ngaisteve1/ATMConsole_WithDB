@@ -59,7 +59,7 @@ This version stored data in the database using Entity Framework with extra requi
 - object
 - Object and collection initializer
 - encapsulation: private, internal and public
-- LINQ to object (LINQ Query syntax)
+- LINQ to Entity (LINQ Query and LINQ Method syntax)
 - List
 - static
 - this
