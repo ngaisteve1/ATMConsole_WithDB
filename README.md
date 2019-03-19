@@ -21,7 +21,7 @@ This version stored data in the database using Entity Framework with extra requi
 - [x] Check account balance
 - [x] Place deposit
 - [x] Make withdraw
-- [x] Check card number and pin against bank account list object (Note: No database is used on purpose to demo the use of list object)
+- [x] Check card number and pin against the database
 - [x] Make third-party-transfer (Transfer within the same bank but different account number)
 - [x] View bank transactions
 - [x] View account details
