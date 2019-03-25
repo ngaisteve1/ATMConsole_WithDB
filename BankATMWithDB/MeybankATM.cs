@@ -125,12 +125,12 @@ namespace MeybankATMSystem
             }
         }
 
-        private static void LockAccount()
+        public void LockAccount()
         {
             Console.Clear();
-            Utility.PrintMessage("Your account is locked.", true);
-            Console.WriteLine("Please go to the nearest branch to unlocked your account.");
-            Console.WriteLine("Thank you for using Meybank. ");
+            _msgPrinter.PrintMessage("Your account is locked.", true);
+            _msgPrinter.PrintMessage("Please go to the nearest branch to unlocked your account.",false);
+            _msgPrinter.PrintMessage("Thank you for using Meybank. ", false);
             Console.ReadKey();
             System.Environment.Exit(1);
         }
@@ -262,7 +262,7 @@ namespace MeybankATMSystem
                 //}
 
                 if (!pass)
-                    Utility.PrintMessage("Invalid Card number or PIN.", false);
+                    _msgPrinter.PrintMessage("Invalid Card number or PIN.", false);
 
                 Console.Clear();
             }
@@ -270,7 +270,7 @@ namespace MeybankATMSystem
 
         public void CheckBalance(BankAccount bankAccount)
         {
-            Utility.PrintMessage($"Your bank account balance amount is: {Utility.FormatAmount(bankAccount.Balance)}", true);
+            _msgPrinter.PrintMessage($"Your bank account balance amount is: {Utility.FormatAmount(bankAccount.Balance)}", true);
         }
 
         public void PlaceDeposit(BankAccount account, decimal transaction_amt)
