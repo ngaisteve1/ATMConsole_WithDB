@@ -313,9 +313,9 @@ namespace MeybankATMSystem
 
             Console.WriteLine("\nSummary");
             Console.WriteLine("-------");
-            Console.WriteLine($"{ATMScreen.cur} 100 x {hundredNotesCount} = {100 * hundredNotesCount}");
-            Console.WriteLine($"{ATMScreen.cur} 50 x {fiftyNotesCount} = {50 * fiftyNotesCount}");
-            Console.WriteLine($"{ATMScreen.cur} 10 x {tenNotesCount} = {10 * tenNotesCount}");
+            Console.WriteLine($"{ATMScreen.cur} 100 x {hundredNotesCount} \t= {100 * hundredNotesCount}");
+            Console.WriteLine($"{ATMScreen.cur} 50 \tx {fiftyNotesCount} \t= {50 * fiftyNotesCount}");
+            Console.WriteLine($"{ATMScreen.cur} 10 \tx {tenNotesCount} \t= {10 * tenNotesCount}");
             Console.Write($"Total amount: {Utility.FormatAmount(amount)}\n\n");
             
             string opt = Utility.GetValidIntInputAmt("1 to confirm or 0 to cancel").ToString();
