@@ -123,7 +123,13 @@ public static class Utility
 
     public static string FormatAmount(decimal amt)
     {
-        return String.Format(culture, "{0:C2}", amt);
+        return string.Format(culture, "{0:C2}", amt);
+    }
+
+    public static string FormatAmountTransaction(decimal amt)
+    {
+        culture.NumberFormat.CurrencyNegativePattern = 1;
+        return string.Format(culture, "{0:C2}", amt);        
     }
 
     public static void PrintMessage(string msg, bool success)

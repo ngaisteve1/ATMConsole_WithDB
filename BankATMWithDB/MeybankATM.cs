@@ -3,6 +3,7 @@ using BankATMRepositoryInterface;
 using ConsoleTables;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace MeybankATMSystem
@@ -260,7 +261,7 @@ namespace MeybankATMSystem
                 // Entity framework. To sync changes from dbcontext ('virtual local db') to physical db.
                 ctx.SaveChanges();
 
-                _msgPrinter.PrintMessage($"You have successfully deposited {Utility.FormatAmount(transaction_amt)}", true);
+                _msgPrinter.PrintMessage($"Please collect your bank slip. You have successfully deposited {Utility.FormatAmount(transaction_amt)}", true);
             }
         }
 
@@ -280,12 +281,13 @@ namespace MeybankATMSystem
             {
                 // Bind transaction_amt to Transaction object
                 // Add transaction record - Start
+                
                 var transaction = new Transaction()
                 {
                     AccountID = account.Id,
                     BankAccountNoFrom = account.AccountNumber,
                     TransactionType = TransactionType.CashWithdrawal,
-                    TransactionAmount = _transaction_amt,
+                    TransactionAmount = Math.Abs(_transaction_amt) * (-1),
                     Description = TransactionType.CashWithdrawal.ToString(),
                     TransactionDate = DateTime.Now
                 };
@@ -294,12 +296,12 @@ namespace MeybankATMSystem
                 // Add transaction record - End
 
                 // Another method to update account balance.
-                account.Balance = account.Balance - _transaction_amt;
+                account.Balance = account.Balance + transaction.TransactionAmount;
 
                 // Entity framework. To sync changes from dbcontext ('virtual local db') to physical db.
                 ctx.SaveChanges();
 
-                _msgPrinter.PrintMessage($"Please collect your money. You have successfully withdraw {Utility.FormatAmount(_transaction_amt)}", true);
+                _msgPrinter.PrintMessage($"Please collect your money and bank slip. You have successfully withdraw {Utility.FormatAmount(_transaction_amt)}", true);
             }
         }
 
@@ -350,7 +352,7 @@ namespace MeybankATMSystem
 
                 foreach (var tran in repoTransaction.ViewTopLatestTransactions(accountID, 5))
                 {
-                    table.AddRow(tran.TransactionDate,tran.Description, Utility.FormatAmount(tran.TransactionAmount));
+                    table.AddRow(tran.TransactionDate,tran.Description, Utility.FormatAmountTransaction(tran.TransactionAmount));
                 }
                 table.Options.EnableCount = false;
                 table.Write();
@@ -411,26 +413,39 @@ namespace MeybankATMSystem
                         BankAccountNoFrom = bankAccount.AccountNumber,
                         BankAccountNoTo = vMThirdPartyTransfer.RecipientBankAccountNumber,
                         TransactionType = TransactionType.ThirdPartyTransfer,
-                        TransactionAmount = vMThirdPartyTransfer.TransferAmount,
+                        TransactionAmount = Math.Abs(vMThirdPartyTransfer.TransferAmount) * (-1),
                         Description = TransactionType.ThirdPartyTransfer.ToString() + " to bank account number " + vMThirdPartyTransfer.RecipientBankAccountNumber,
                         TransactionDate = DateTime.Now
                     };
+
+                    Transaction transaction2 = new Transaction()
+                    {
+                        AccountID = selectedBankAccountReceiver.Id,
+                        BankAccountNoFrom = bankAccount.AccountNumber,
+                        BankAccountNoTo = vMThirdPartyTransfer.RecipientBankAccountNumber,
+                        TransactionType = TransactionType.ThirdPartyTransfer,
+                        TransactionAmount = vMThirdPartyTransfer.TransferAmount,
+                        Description = TransactionType.ThirdPartyTransfer.ToString() + " from bank account number " + bankAccount.AccountNumber,
+                        TransactionDate = DateTime.Now
+                    };
+
                     // Without Entity framework - _listOfTransactions.Add(transaction);
                     // With Entity Framework
                     //db.Transactions.Add(transaction);
                     repoTransaction.InsertTransaction(transaction);
-
-                    _msgPrinter.PrintMessage($"You have successfully transferred out {Utility.FormatAmount(vMThirdPartyTransfer.TransferAmount)} to {vMThirdPartyTransfer.RecipientBankAccountName}", true);
+                    repoTransaction.InsertTransaction(transaction2);
                     // Add transaction record - End
 
                     // Update balance amount (Giver)
-                    bankAccount.Balance = bankAccount.Balance - vMThirdPartyTransfer.TransferAmount;
+                    bankAccount.Balance += vMThirdPartyTransfer.TransferAmount;
 
                     // Update balance amount (Receiver)
-                    selectedBankAccountReceiver.Balance = selectedBankAccountReceiver.Balance + vMThirdPartyTransfer.TransferAmount;
+                    selectedBankAccountReceiver.Balance += vMThirdPartyTransfer.TransferAmount;
 
                     // With Entity framework. To sync changes from dbcontext ('virtual local db') to physical db.
                     ctx.SaveChanges();
+
+                    _msgPrinter.PrintMessage($"Please collect your bank slip. You have successfully transferred out {Utility.FormatAmount(vMThirdPartyTransfer.TransferAmount)} to {vMThirdPartyTransfer.RecipientBankAccountName}", true);
                 }
             }
         }    

@@ -9,24 +9,30 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankATMRepository", "BankAT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankATMAdmin", "BankATMAdmin\BankATMAdmin.csproj", "{FFC9C5B8-FC66-4BFF-8DCB-00EEABBD9660}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitTestATM", "NUnitTestATM\NUnitTestATM.csproj", "{FDD32CB8-677C-44A0-AF5A-932D5D2C98D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FC9CA820-FEBD-4E84-B988-C6BDB9849727}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC9CA820-FEBD-4E84-B988-C6BDB9849727}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC9CA820-FEBD-4E84-B988-C6BDB9849727}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9CA820-FEBD-4E84-B988-C6BDB9849727}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{FC9CA820-FEBD-4E84-B988-C6BDB9849727}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC9CA820-FEBD-4E84-B988-C6BDB9849727}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70F0EA78-5A29-4778-9CFA-FB1B564A07ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70F0EA78-5A29-4778-9CFA-FB1B564A07ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70F0EA78-5A29-4778-9CFA-FB1B564A07ED}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{70F0EA78-5A29-4778-9CFA-FB1B564A07ED}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{70F0EA78-5A29-4778-9CFA-FB1B564A07ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70F0EA78-5A29-4778-9CFA-FB1B564A07ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FFC9C5B8-FC66-4BFF-8DCB-00EEABBD9660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FFC9C5B8-FC66-4BFF-8DCB-00EEABBD9660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFC9C5B8-FC66-4BFF-8DCB-00EEABBD9660}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{FFC9C5B8-FC66-4BFF-8DCB-00EEABBD9660}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{FFC9C5B8-FC66-4BFF-8DCB-00EEABBD9660}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFC9C5B8-FC66-4BFF-8DCB-00EEABBD9660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDD32CB8-677C-44A0-AF5A-932D5D2C98D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDD32CB8-677C-44A0-AF5A-932D5D2C98D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDD32CB8-677C-44A0-AF5A-932D5D2C98D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDD32CB8-677C-44A0-AF5A-932D5D2C98D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

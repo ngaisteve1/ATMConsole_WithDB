@@ -61,9 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\AppDbContext.cs" />
-    <Compile Include="Migrations\201903102301308_update.cs" />
-    <Compile Include="Migrations\201903102301308_update.Designer.cs">
-      <DependentUpon>201903102301308_update.cs</DependentUpon>
+    <Compile Include="Migrations\201903250212141_abc.cs" />
+    <Compile Include="Migrations\201903250212141_abc.Designer.cs">
+      <DependentUpon>201903250212141_abc.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MockMessagePrinter.cs" />
@@ -82,8 +82,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201903102301308_update.resx">
-      <DependentUpon>201903102301308_update.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201903250212141_abc.resx">
+      <DependentUpon>201903250212141_abc.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
