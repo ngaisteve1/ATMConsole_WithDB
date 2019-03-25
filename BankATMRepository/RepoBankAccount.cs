@@ -1,4 +1,5 @@
 ﻿using BankATMRepositoryInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,8 +43,21 @@ namespace BankATMRepository
         }        
 
         public void Save()
-        {            
-            db.SaveChanges();
+        {
+            try
+            {
+                db.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                System.Console.WriteLine("Error:" + ex.Message);
+            }
+            finally
+            {
+                if(db != null)
+                db.Dispose();
+            }
+
         }        
     }
 }

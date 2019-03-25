@@ -8,6 +8,7 @@ public class Transaction
     public long? BankAccountNoTo { get; set; }
     public TransactionType TransactionType { get; set; }
     public decimal TransactionAmount { get; set; }
+    public string Description { get; set; }
     public DateTime TransactionDate { get; set; }
 
     // Foreign Key
@@ -19,7 +20,7 @@ public class Transaction
 
 public enum TransactionType
 {
-    Deposit,
-    Withdrawal,
+    CashDeposit,
+    CashWithdrawal,
     ThirdPartyTransfer
 }
