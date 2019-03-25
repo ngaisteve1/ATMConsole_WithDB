@@ -97,16 +97,16 @@ namespace MeybankATMSystem
                                     ViewTransaction(selectedAccount.Id);
                                     break;
                                 case (int)SecureMenu.ChangeATMCardPIN:
-                                    Utility.PrintMessage("This function is not ready.", false);
+                                    _msgPrinter.PrintMessage("This function is not ready.", false);
                                     
                                     break;
                                 case (int)SecureMenu.Logout:
-                                    Utility.PrintMessage("You have succesfully logout. Please collect your ATM card..", true);
+                                    _msgPrinter.PrintMessage("You have succesfully logout. Please collect your ATM card.", true);
 
                                     Execute();
                                     break;
                                 default:
-                                    Utility.PrintMessage("Invalid Option Entered.", false);
+                                    _msgPrinter.PrintMessage("Invalid Option Entered.", false);
 
                                     break;
                             }
@@ -119,7 +119,7 @@ namespace MeybankATMSystem
                         System.Environment.Exit(1);
                         break;
                     default:
-                        Utility.PrintMessage("Invalid Option Entered.", false);
+                        _msgPrinter.PrintMessage("Invalid Option Entered.", false);
                         break;
                 }
             }
@@ -178,39 +178,88 @@ namespace MeybankATMSystem
 
                 // With repository layer
                 var listOfAccounts = repoBankAccount.ViewAllBankAccount();
+                var validCardNo = (from acc in listOfAccounts
+                                   where acc.CardNumber == inputAccount.CardNumber
+                                   select acc).SingleOrDefault();
+
+                var validAccount = (from acc in listOfAccounts
+                                  where acc.CardNumber == inputAccount.CardNumber
+                                  && acc.PinCode == inputAccount.PinCode
+                                  select acc).SingleOrDefault();
 
                 // Without Entity Framework
                 //foreach (BankAccount account in _accountList)
 
                 // With Entity Framework
-                foreach (BankAccount account in listOfAccounts)
+                if(validCardNo != null) // valid Card Number
                 {
-                    if (inputAccount.CardNumber.Equals(account.CardNumber))
-                    {
-                        selectedAccount = account;
 
-                        if (inputAccount.PinCode.Equals(account.PinCode))
+
+                    // Check both card number and card pin.
+                    if (validAccount != null)
+                    {
+                        if(validAccount.isLocked)
                         {
-                            if (selectedAccount.isLocked)
-                                LockAccount();
-                            else
-                                pass = true;                            
+                            LockAccount();
+                            pass = false;
                         }
+
                         else
                         {
-                            pass = false;
-                            tries++;
+                            selectedAccount = validAccount;
+                            pass = true;
+                        }
+                            
+                    }
+                    else
+                    {
+                        // Check how many times user login tries.
+                        pass = false;
+                        tries++;
 
-                            if (tries >= maxTries)
-                            {
-                                selectedAccount.isLocked = true;
-
-                                LockAccount();
-                            }
-
+                        // If more than 3 tries, lock the account.
+                        if (tries >= maxTries)
+                        {
+                            validCardNo.isLocked = true;
+                            repoBankAccount.Save();
+                            LockAccount();
                         }
                     }
                 }
+                else
+                {
+                    pass = false;
+                }
+
+                // Without LINQ                
+                //foreach (BankAccount account in listOfAccounts)
+                //{
+                //    if (inputAccount.CardNumber.Equals(account.CardNumber))
+                //    {
+                //        selectedAccount = account;
+
+                //        if (inputAccount.PinCode.Equals(account.PinCode))
+                //        {
+                //            if (selectedAccount.isLocked)
+                //                LockAccount();
+                //            else
+                //                pass = true;                            
+                //        }
+                //        else
+                //        {
+                //            pass = false;
+                //            tries++;
+
+                //            if (tries >= maxTries)
+                //            {
+                //                selectedAccount.isLocked = true;
+
+                //                LockAccount();
+                //            }
+
+                //        }
+                //    }
+                //}
 
                 if (!pass)
                     Utility.PrintMessage("Invalid Card number or PIN.", false);
