@@ -1,4 +1,5 @@
 ﻿using BankATMRepositoryInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -47,10 +48,9 @@ namespace BankATMRepository
         }
 
         public void Save()
-        {
-            db.SaveChanges();
-        }
-
+        {            
+                db.SaveChanges();            
+        }        
 
     }
 }

@@ -71,7 +71,9 @@
     <Compile Include="Model\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepoBankAccount.cs" />
+    <Compile Include="RepoDB.cs" />
     <Compile Include="Repository\IBankAccount.cs" />
+    <Compile Include="Repository\IDb.cs" />
     <Compile Include="Repository\ITransaction.cs" />
     <Compile Include="RepoTransaction.cs" />
     <Compile Include="Utility.cs" />

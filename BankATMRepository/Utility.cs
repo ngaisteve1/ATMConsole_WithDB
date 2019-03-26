@@ -132,7 +132,7 @@ public static class Utility
         return string.Format(culture, "{0:C2}", amt);        
     }
 
-    public static void PrintMessage(string msg, bool success)
+    private static void PrintMessage(string msg, bool success)
     {
         if (success)
             Console.ForegroundColor = ConsoleColor.Yellow;

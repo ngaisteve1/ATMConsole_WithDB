@@ -43,21 +43,8 @@ namespace BankATMRepository
         }        
 
         public void Save()
-        {
-            try
-            {
-                db.SaveChanges();
-            }
-            catch(Exception ex)
-            {
-                System.Console.WriteLine("Error:" + ex.Message);
-            }
-            finally
-            {
-                if(db != null)
-                db.Dispose();
-            }
-
+        {            
+                db.SaveChanges();            
         }        
     }
 }

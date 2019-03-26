@@ -1,4 +1,5 @@
 using BankATMRepository;
+using BankATMRepository.Repository;
 using BankATMRepositoryInterface;
 using ConsoleTables;
 using System;
@@ -30,12 +31,14 @@ namespace MeybankATMSystem
 
         private readonly IBankAccount repoBankAccount = null;
         private readonly ITransaction repoTransaction = null;
+        private readonly IDb repoDb = null;
         private readonly IMessagePrinter _msgPrinter;
 
         public MeybankATM()
         {
-            this.repoBankAccount = new RepoBankAccount();
-            this.repoTransaction = new RepoTransaction();
+            repoBankAccount = new RepoBankAccount();
+            repoTransaction = new RepoTransaction();
+            repoDb = new RepoDB();
             _msgPrinter = new MockMessagePrinter();
         }
 
@@ -49,6 +52,8 @@ namespace MeybankATMSystem
 
         public void Execute()
         {
+            repoDb.CheckDbConnection();
+
             ATMScreen.ShowMenu1();
 
             while (true)
@@ -113,10 +118,11 @@ namespace MeybankATMSystem
                         }
 
                     case 2:
+                        repoDb.ClearDb();
                         Console.Write("\nThank you for using Meybank. Exiting program now .");
                         Utility.printDotAnimation(15);
 
-                        System.Environment.Exit(1);
+                        Environment.Exit(1);
                         break;
                     default:
                         _msgPrinter.PrintMessage("Invalid Option Entered.", false);
@@ -132,6 +138,7 @@ namespace MeybankATMSystem
             _msgPrinter.PrintMessage("Please go to the nearest branch to unlocked your account.",false);
             _msgPrinter.PrintMessage("Thank you for using Meybank. ", false);
             Console.ReadKey();
+            repoDb.ClearDb();
             System.Environment.Exit(1);
         }
 
