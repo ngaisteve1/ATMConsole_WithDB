@@ -11,10 +11,12 @@ namespace BankATMAdmin
         private static AppDbContext db = new AppDbContext();
 
         private IBankAccount repoBankAccount = null;
-        
+        private IMessagePrinter messagePrinter = null;
+                
         public MeyBankATMAdmin()
         {
-            this.repoBankAccount = new RepoBankAccount();
+            repoBankAccount = new RepoBankAccount();
+            messagePrinter = new MockMessagePrinter();
         }
 
         public MeyBankATMAdmin(IBankAccount repoBankAccount)
@@ -24,7 +26,9 @@ namespace BankATMAdmin
 
         public void Execute()
         {
-            ATMScreenAdmin.ShowMenu();
+            ATMScreenAdmin aTMScreenAdmin = new ATMScreenAdmin();
+
+            aTMScreenAdmin.ShowMenu();
 
             while (true)
             {
@@ -35,7 +39,7 @@ namespace BankATMAdmin
 
                         while (true)
                         {
-                            ATMScreenAdmin.ShowMenuSecure();
+                            aTMScreenAdmin.ShowMenuSecure();
 
                             switch (Utility.GetValidIntInputAmt("your option"))
                             {
@@ -43,19 +47,19 @@ namespace BankATMAdmin
                                     AddSampleBankAccount();
                                     break;
                                 case (int)SecureMenuAdmin.AddBankAccount:
-                                    AddBankAccount(ATMScreenAdmin.getBankAccountForm());
+                                    AddBankAccount(aTMScreenAdmin.getBankAccountForm());
                                     break;
                                 case (int)SecureMenuAdmin.ManageBankAccount:
                                     ManageBankAccount();
 
                                     break;
                                 case (int)SecureMenuAdmin.Logout:
-                                    Utility.PrintMessage("You have succesfully logout.", true);
+                                    messagePrinter.PrintMessage("You have succesfully logout.", true);
 
                                     Execute();
                                     break;
                                 default:
-                                    Utility.PrintMessage("Invalid Option Entered.", false);
+                                    messagePrinter.PrintMessage("Invalid Option Entered.", false);
 
                                     break;
                             }
@@ -68,7 +72,7 @@ namespace BankATMAdmin
                         System.Environment.Exit(1);
                         break;
                     default:
-                        Utility.PrintMessage("Invalid Option Entered.", false);
+                        messagePrinter.PrintMessage("Invalid Option Entered.", false);
                         break;
                 }
             }
@@ -93,7 +97,7 @@ namespace BankATMAdmin
                 if (username.Equals("admin") && password.Equals("abc123"))
                     pass = true;
                 else
-                    Utility.PrintMessage("Invalid username or password.", false);
+                    messagePrinter.PrintMessage("Invalid username or password.", false);
 
 
                 Console.Clear();
@@ -109,7 +113,7 @@ namespace BankATMAdmin
             
             db.Database.ExecuteSqlCommand("DELETE FROM BankAccounts");
             db.Database.ExecuteSqlCommand("DELETE FROM Transactions");
-            Utility.PrintMessage("Cleared all data in the database.",false);
+            messagePrinter.PrintMessage("Cleared all data in the database.",false);
 
             var _accountList = new List<BankAccount>
             {
@@ -129,7 +133,7 @@ namespace BankATMAdmin
 
                 // Without Repository layer
                 //db.SaveChanges();
-                Utility.PrintMessage($"{_accountList.Count} Sample bank account added successfully.", true);
+                messagePrinter.PrintMessage($"{_accountList.Count} Sample bank account added successfully.", true);
             }
             finally
             {
@@ -150,7 +154,7 @@ namespace BankATMAdmin
                 // With Repository layer,
                 repoBankAccount.InsertBankAccount(_bankAccount);
 
-                Utility.PrintMessage("Bank account added successfully.", true);
+                messagePrinter.PrintMessage("Bank account added successfully.", true);
             }
             finally
             {
@@ -182,7 +186,7 @@ namespace BankATMAdmin
                 if (selectedBankAccount != null)
                     validAccount = true;
                 else
-                    Utility.PrintMessage("Bank account not found.", false);
+                    messagePrinter.PrintMessage("Bank account not found.", false);
             }
 
             // If found selected bank account, view bank account details.
@@ -191,7 +195,7 @@ namespace BankATMAdmin
 
         public void UpdateBankAccount()
         {
-            Utility.PrintMessage("Update data feature is not available in this version", false);
+            messagePrinter.PrintMessage("Update data feature is not available in this version", false);
             throw new NotImplementedException();
         }
 
@@ -201,7 +205,7 @@ namespace BankATMAdmin
             Console.Beep();
 
             // User Experience (UX)
-            string opt2 = Utility.GetValidStringInput("Confirm delete? Yes (Y) or No (N)?");
+            string opt2 = Utility.GetValidStringInput("Delete bank account will delete all its bank transaction history data. Confirm delete? Yes (Y) or No (N)?");
             switch (opt2.ToUpper())
             {
                 case "Y":
@@ -212,7 +216,7 @@ namespace BankATMAdmin
                     // With Repository layer
                     repoBankAccount.DeleteBankAccount(_bankAccount);
 
-                    Utility.PrintMessage("Selected bank account successfully deleted.", true);
+                    messagePrinter.PrintMessage("Selected bank account successfully deleted.", true);
 
                     break;
                 case "N":

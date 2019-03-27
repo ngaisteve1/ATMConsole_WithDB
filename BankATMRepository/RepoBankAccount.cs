@@ -32,6 +32,10 @@ namespace BankATMRepository
 
         public void DeleteBankAccount(BankAccount bankAccount)
         {
+            var transactionToDelete = from t in db.Transactions
+                                      where t.AccountID == bankAccount.Id
+                                      select t;
+            db.Transactions.RemoveRange(transactionToDelete);
             db.BankAccounts.Remove(bankAccount);
             Save();
         }

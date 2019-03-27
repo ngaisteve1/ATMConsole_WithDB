@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel;
 using FluentValidation.Results;
-
+using BankATMRepository;
 
 namespace BankATMAdmin
 {
@@ -23,12 +23,19 @@ namespace BankATMAdmin
         Logout = 4
     }
 
-    class ATMScreenAdmin
+    public class ATMScreenAdmin
     {
         // todo: to move to general library.
         internal static string cur = "RM ";
 
-        public static void ShowMenu()
+        private IMessagePrinter messagePrinter = null;
+        
+        public ATMScreenAdmin()
+        {
+            messagePrinter = new MockMessagePrinter();
+        }
+
+        public void ShowMenu()
         {
             Console.Clear();
             Console.WriteLine(" ---------------------------------");
@@ -40,7 +47,7 @@ namespace BankATMAdmin
             Console.WriteLine(" ---------------------------------");
         }
 
-        public static void ShowMenuSecure()
+        public void ShowMenuSecure()
         {
             Console.Clear();
             Console.WriteLine(" ---------------------------------");
@@ -55,7 +62,7 @@ namespace BankATMAdmin
         }
 
         #region ATM UI Forms
-        public static BankAccount getBankAccountForm()
+        public BankAccount getBankAccountForm()
         {
             var newBankAccountForm = new BankAccount();
 
@@ -101,12 +108,12 @@ namespace BankATMAdmin
                 foreach (var failure in validationResult.Errors)
                 {
                     // failure.PropertyName 
-                    Utility.PrintMessage($"Error: {failure.ErrorMessage}",false);    
+                    messagePrinter.PrintMessage($"Error: {failure.ErrorMessage}",false);    
                 }
 
                 if (!validationResult.IsValid)
                 {
-                    Utility.PrintMessage($"Enter all Bank Account details again", false);
+                    messagePrinter.PrintMessage($"Enter all Bank Account details again", false);
                     getBankAccountForm();
                 }                
             }
