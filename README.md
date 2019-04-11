@@ -15,7 +15,7 @@ This version stored data in the database using Entity Framework with extra requi
 - IDE: Visual Studio Community 2017
 - Paradigm or pattern of programming: Object-Oriented Programming (OOP)
 - Data: Data of this demo program (Bank Account and Transaction data) are stored in SQL Server database using Entity Framework ORM.
-- NuGet: ConsoleTables (Version 2.2), FluentValidation (Version 8), CsConsoleFormat (Coming Soon)
+- NuGet: ConsoleTables (Version 2.2), FluentValidation (Version 8), Log4Net (Version 2.0.8.0), CsConsoleFormat (Coming Soon)
 
 ### <img class="emoji" alt="atm" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3e7.png"> <img class="emoji" alt="credit_card" height="20" width="20" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4b3.png"> ATM Basic Features / Use Cases (Bank Customer):
 - [x] Check account balance
