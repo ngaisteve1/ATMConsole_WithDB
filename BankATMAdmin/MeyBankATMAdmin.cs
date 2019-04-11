@@ -1,15 +1,18 @@
 ﻿using BankATMRepository;
 using BankATMRepositoryInterface;
+using log4net;
+using log4net.Config;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace BankATMAdmin
 {
     class MeyBankATMAdmin
     {
         private static AppDbContext db = new AppDbContext();
-
+        private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private IBankAccount repoBankAccount = null;
         private IMessagePrinter messagePrinter = null;
                 
@@ -26,6 +29,7 @@ namespace BankATMAdmin
 
         public void Execute()
         {
+            CheckDB();
             ATMScreenAdmin aTMScreenAdmin = new ATMScreenAdmin();
 
             aTMScreenAdmin.ShowMenu();
@@ -257,5 +261,24 @@ namespace BankATMAdmin
 
         #endregion
 
+        public void CheckDB()
+        {
+            try
+            {
+                db.Database.Connection.Open();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("System Error. Please contact the bank.");
+                XmlConfigurator.Configure();
+                _log.Info("Database connection error. Check database services.");
+                Environment.Exit(0);
+                Console.ReadKey();
+            }
+            finally
+            {
+                db.Database.Connection.Close();
+            }
+        }
     }
 }
