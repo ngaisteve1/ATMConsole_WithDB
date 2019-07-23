@@ -69,13 +69,13 @@ namespace BankATMAdmin
             BankAccountValidator bankAccountValidator = new BankAccountValidator();
 
             
-            newBankAccountForm.FullName = Utility.GetValidStringInput("account full name");
+            newBankAccountForm.FullName = Utility.Convert<string>("account full name");
 
             Console.WriteLine("Example of NRIC, 900210-10-8080");
-            newBankAccountForm.NRIC = Utility.GetValidStringInput("NRIC");
+            newBankAccountForm.NRIC = Utility.Convert<string>("NRIC");
 
             
-            switch (Utility.GetValidStringInput("Account Type. (S)aving or (C)urrent account"))
+            switch (Utility.Convert<string>("Account Type. (S)aving or (C)urrent account"))
             {
                 case "S":
                     newBankAccountForm.AccountType = AccountType.SavingAccount;
@@ -93,14 +93,14 @@ namespace BankATMAdmin
               
 
             Console.WriteLine($"A minimum of {ATMScreenAdmin.cur}50.00 balance is required to open Saving bank account type.");
-            newBankAccountForm.Balance = Utility.GetValidDecimalInputAmt("account starting balance");
+            newBankAccountForm.Balance = Utility.Convert<decimal>("account starting balance");
 
             // Variation. Auto generate a random account number or from a running sequence number
             //newBankAccountForm.CardNumber = Utility.GetValidIntInputAmt("ATM card number");
             newBankAccountForm.CardNumber = Utility.GenerateRandomNumber(203450123, 698910890, new Random());
 
             Console.WriteLine("Enter 6 digits for ATM Card Pin code.");
-            newBankAccountForm.PinCode = Utility.GetValidIntInputAmt("ATM card pin");
+            newBankAccountForm.PinCode = Utility.Convert<long>("ATM card pin");
 
             ValidationResult validationResult = bankAccountValidator.Validate(newBankAccountForm);
             if (!validationResult.IsValid)

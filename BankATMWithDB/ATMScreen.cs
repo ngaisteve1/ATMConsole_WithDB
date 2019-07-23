@@ -41,7 +41,8 @@ public static class ATMScreen
         Console.WriteLine("\nNote: Actual ATM system will just let you ");
         Console.Write("place bank notes into ATM machine. \n\n");
 
-        return Utility.GetValidDecimalInputAmt($"amount {cur}"); ;
+        //return Utility.GetValidDecimalInputAmt($"amount {cur}");
+        return Utility.Convert<decimal>($"amt {cur}");
     }
 
     public static decimal WithdrawalForm()
@@ -49,17 +50,21 @@ public static class ATMScreen
         Console.WriteLine("\nNote: For GUI or actual ATM system, user can ");
         Console.Write("choose some default withdrawal amount or custom amount. \n\n");
         
-        return Utility.GetValidDecimalInputAmt($"amount {cur}"); ;
+        //return Utility.GetValidDecimalInputAmt($"amount {cur}");
+        return Utility.Convert<decimal>($"amt {cur}");
     }
 
     public static BankATMRepo.VMThirdPartyTransfer ThirdPartyTransferForm(){
         var vMThirdPartyTransfer = new BankATMRepo.VMThirdPartyTransfer();
 
-        vMThirdPartyTransfer.RecipientBankAccountNumber = Utility.GetValidIntInputAmt("recipient's account number");
+        vMThirdPartyTransfer.RecipientBankAccountNumber = Utility.Convert<long>("recipient's account number");
 
-        vMThirdPartyTransfer.TransferAmount = Utility.GetValidDecimalInputAmt($"amount {cur}");
+        //vMThirdPartyTransfer.TransferAmount = Utility.GetValidDecimalInputAmt($"amount {cur}");
+        vMThirdPartyTransfer.TransferAmount = Utility.Convert<decimal>($"amount {cur}");
 
-        vMThirdPartyTransfer.RecipientBankAccountName = Utility.GetRawInput("recipient's account name");
+
+        //vMThirdPartyTransfer.RecipientBankAccountName = Utility.GetRawInput("recipient's account name");
+        vMThirdPartyTransfer.RecipientBankAccountName = Utility.Convert<string>("recipient's account name");
         // no validation here yet.
 
         return vMThirdPartyTransfer;

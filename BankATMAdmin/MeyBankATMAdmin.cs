@@ -36,7 +36,7 @@ namespace BankATMAdmin
 
             while (true)
             {
-                switch (Utility.GetValidIntInputAmt("your option"))
+                switch (Utility.Convert<int>("your option"))
                 {
                     case 1:
                         Authentication();
@@ -45,7 +45,7 @@ namespace BankATMAdmin
                         {
                             aTMScreenAdmin.ShowMenuSecure();
 
-                            switch (Utility.GetValidIntInputAmt("your option"))
+                            switch (Utility.Convert<int>("your option"))
                             {
                                 case (int)SecureMenuAdmin.AddSampleBankAccount:
                                     AddSampleBankAccount();
@@ -91,8 +91,8 @@ namespace BankATMAdmin
             {
                 string username, password;
 
-                username = Utility.GetValidStringInput("Username");
-                password = Utility.GetValidStringInput("Password");
+                username = Utility.Convert<string>("Username");
+                password = Utility.Convert<string>("Password");
 
                 Console.Write("\nChecking username and password.");
                 Utility.printDotAnimation();
@@ -177,7 +177,7 @@ namespace BankATMAdmin
 
             while (!validAccount)
             {
-                newBankAccount.AccountNumber = Utility.GetValidIntInputAmt("account number");
+                newBankAccount.AccountNumber = Utility.Convert<int>("account number");
 
                 // Without Repository layer
                 //selectedBankAccount = (from b in db.BankAccounts
@@ -209,7 +209,7 @@ namespace BankATMAdmin
             Console.Beep();
 
             // User Experience (UX)
-            string opt2 = Utility.GetValidStringInput("Delete bank account will delete all its bank transaction history data. Confirm delete? Yes (Y) or No (N)?");
+            string opt2 = Utility.Convert<string>("Delete bank account will delete all its bank transaction history data. Confirm delete? Yes (Y) or No (N)?");
             switch (opt2.ToUpper())
             {
                 case "Y":
@@ -245,7 +245,7 @@ namespace BankATMAdmin
             Console.WriteLine($"isLocked: {_bankAccount.isLocked}");
             Console.WriteLine();
 
-            string opt = Utility.GetValidStringInput("Edit (E) or Delete (D) bank account?");
+            string opt = Utility.Convert<string>("Edit (E) or Delete (D) bank account?");
             switch (opt.ToUpper())
             {
                 case "D":

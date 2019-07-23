@@ -2,82 +2,110 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Globalization;
+using System.ComponentModel;
 
 public static class Utility
 {
     private static CultureInfo culture = new CultureInfo("ms-MY");
-    public static decimal GetValidDecimalInputAmt(string input)
+
+    public static T Convert<T>(this string input)
     {
         bool valid = false;
         string rawInput;
-        decimal amount = 0;
 
-        // Get user's input input type is valid
         while (!valid)
         {
-            rawInput = GetRawInput(input);
-            valid = decimal.TryParse(rawInput, out amount);
-            if (!valid || amount == 0)
+            rawInput = Utility.GetRawInput(input);
+
+            try
             {
-                PrintMessage("Invalid input. Try again.", false);
-                valid = false;
+                var converter = TypeDescriptor.GetConverter(typeof(T));
+                if (converter != null)
+                    // Cast ConvertFromString(string text) : object to (T)
+                    return (T)converter.ConvertFromString(rawInput);
+
+                return default;
             }
-            else
+            catch
             {
-                valid = true;
-            }              
-        }
-
-        return amount;
-    }
-
-    public static long GetValidIntInputAmt(string input)
-    {
-        bool valid = false;
-        string rawInput;
-        long amount = 0;
-
-        // Get user's input input type is valid
-        while (!valid)
-        {
-            rawInput = GetRawInput(input);
-            valid = long.TryParse(rawInput, out amount);
-
-            if (!valid)
-            {
-                PrintMessage("Invalid input. Try again.", false);
-                valid = false;
-            }
-            else
-            {
-                valid = true;
+                Utility.PrintMessage("Invalid input. Try again.", false);
             }
         }
-
-        return amount;
+        return default;
     }
 
-    public static string GetValidStringInput(string input)
-    {
-        bool valid = false;
-        string rawInput = "";
+    //public static decimal GetValidDecimalInputAmt(string input)
+    //{
+    //    bool valid = false;
+    //    string rawInput;
+    //    decimal amount = 0;
 
-        // Get user's input input type is valid
-        while (!valid)
-        {
-            rawInput = GetRawInput(input);
-            if (string.IsNullOrEmpty(rawInput))
-            {
-                PrintMessage("Invalid input. Try again.", false);
-                valid = false;
-            }
-            else
-                valid = true;
+    //    // Get user's input input type is valid
+    //    while (!valid)
+    //    {
+    //        rawInput = GetRawInput(input);
+    //        valid = decimal.TryParse(rawInput, out amount);
+    //        if (!valid || amount == 0)
+    //        {
+    //            PrintMessage("Invalid input. Try again.", false);
+    //            valid = false;
+    //        }
+    //        else
+    //        {
+    //            valid = true;
+    //        }              
+    //    }
 
-        }
+    //    return amount;
+    //}
 
-        return rawInput;
-    }
+    //public static long GetValidIntInputAmt(string input)
+    //{
+    //    bool valid = false;
+    //    string rawInput;
+    //    long amount = 0;
+
+    //    // Get user's input input type is valid
+    //    while (!valid)
+    //    {
+    //        rawInput = GetRawInput(input);
+    //        valid = long.TryParse(rawInput, out amount);
+
+    //        if (!valid)
+    //        {
+    //            PrintMessage("Invalid input. Try again.", false);
+    //            valid = false;
+    //        }
+    //        else
+    //        {
+    //            valid = true;
+    //        }
+    //    }
+
+    //    return amount;
+    //}
+
+    //public static string GetValidStringInput(string input)
+    //{
+    //    bool valid = false;
+    //    string rawInput = "";
+
+    //    // Get user's input input type is valid
+    //    while (!valid)
+    //    {
+    //        rawInput = GetRawInput(input);
+    //        if (string.IsNullOrEmpty(rawInput))
+    //        {
+    //            PrintMessage("Invalid input. Try again.", false);
+    //            valid = false;
+    //        }
+    //        else
+    //            valid = true;
+
+    //    }
+
+    //    return rawInput;
+    //}
 
 
     public static string GetRawInput(string message)
